@@ -110,7 +110,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
       final fileName =
           'drug_license_${DateTime.now().millisecondsSinceEpoch}_${_documentPath}';
       final documentUrl = await SupabaseService.uploadDocument(
-        bucket: 'supplier_documents',
+        bucket: 'drug-licenses',
         file: _selectedDocument!,
         fileName: fileName,
       );
