@@ -33,17 +33,15 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
               ),
             ),
           ),
-          RadioGroup<String>(
+          Radio<String>(
+            value: title,
             groupValue: selectedMethod,
             onChanged: (value) {
               setState(() {
                 selectedMethod = value!;
               });
             },
-            child: Radio<String>(
-              value: title,
-              activeColor: Colors.teal,
-            ),
+            activeColor: Colors.teal,
           )
         ],
       ),
@@ -73,9 +71,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
               Align(
                 alignment: Alignment.centerLeft,
                 child: TextButton.icon(
-                  onPressed: () {
-                 
-                  },
+                  onPressed: () {},
                   icon: const Icon(Icons.add, color: Colors.teal),
                   label: const Text(
                     "Add New Card",

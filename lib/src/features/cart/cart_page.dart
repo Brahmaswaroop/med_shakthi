@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:med_shakthi/src/features/payment/payment.dart';
+import 'package:med_shakthi/src/features/payment/BillingScreen.dart';
+import 'package:med_shakthi/src/features/payment/PaymentMethodScreen.dart';
 
 // --- DATA MODEL ---
 class CartItem {
@@ -454,7 +455,7 @@ class _CartPageState extends State<CartPage> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => PaymentMethodScreen()));
+                        builder: (context) => const BillingScreen()));
                 // _handleCheckout();
               },
               child: const Text('Confirm Order'),
