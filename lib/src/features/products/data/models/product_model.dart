@@ -27,6 +27,9 @@ class Product {
     );
   }
 
+  // Alias for fromMap to support standard JSON decoding
+  factory Product.fromJson(Map<String, dynamic> json) => Product.fromMap(json);
+
   //  Product -> Map (Insert/Update)
   Map<String, dynamic> toMap() {
     return {

@@ -22,7 +22,7 @@ class _SupplierDashboardState extends State<SupplierDashboard> {
   late final List<Widget> _pages = [
     const SupplierDashboardHome(),
     const SupplierCategoryPage(),
-    // const SupplierWishlistPage(),
+    const SupplierWishlistPage(),
     const OrdersPage(),
     const SupplierProfileScreen(),
   ];

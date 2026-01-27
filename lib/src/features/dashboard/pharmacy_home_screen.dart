@@ -1,14 +1,16 @@
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart'; // Added Provider
+import 'package:med_shakthi/src/features/category/category_ui.dart';
+import 'package:med_shakthi/src/features/products/data/repositories/product_repository.dart';
+import 'package:med_shakthi/src/features/wishlist/data/wishlist_service.dart';
+import 'package:med_shakthi/src/features/wishlist/presentation/screens/wishlist_page.dart';
 import 'package:med_shakthi/src/features/cart/presentation/screens/cart_page.dart';
 import 'package:med_shakthi/src/features/orders/orders_page.dart';
 import 'package:med_shakthi/src/features/products/presentation/screens/product_page.dart';
-import 'package:med_shakthi/src/features/profile/presentation/screens/profile_screen.dart';
 import 'package:provider/provider.dart';
-import '../cart/data/cart_data.dart';
-import '../cart/data/cart_item.dart';
-import '../orders/order_screen.dart';
-import '../products/data/models/product_model.dart';
+import '../profile/presentation/screens/profile_screen.dart';
+import 'package:med_shakthi/src/features/cart/data/cart_data.dart';
+import 'package:med_shakthi/src/features/cart/data/cart_item.dart';
+import 'package:med_shakthi/src/features/products/data/models/product_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
 /// This screen implements the "Med Shakti home page" for Retailers
@@ -40,7 +42,7 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
           _buildHomeContent(),
           const CategoryPageNew(),
           WishlistPage(wishlistService: wishlistService),
-          const OrderScreen(),
+          const OrdersPage(),
           const AccountPage(),
         ],
       ),
@@ -275,6 +277,117 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
   }
 
   /// Fetches Real Products from Supabase
+  Widget _buildProductCard(Product product) {
+    return GestureDetector(
+      onTap: () => Navigator.push(
+        context,
+        MaterialPageRoute(builder: (_) => ProductPage(product: product)),
+      ),
+      child: Container(
+        width: 160,
+        margin: const EdgeInsets.only(right: 16),
+        padding: const EdgeInsets.all(12),
+        decoration: BoxDecoration(
+          color: Colors.white,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.grey.withOpacity(0.08),
+              blurRadius: 15,
+              offset: const Offset(0, 5),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Center(
+                child: Image.network(
+                  product.image,
+                  fit: BoxFit.contain,
+                  errorBuilder: (c, e, s) => Container(
+                    color: Colors.grey[100],
+                    child: const Center(child: Icon(Icons.image_not_supported)),
+                  ),
+                ),
+              ),
+            ),
+            const SizedBox(height: 12),
+            Text(
+              product.name,
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 14),
+            ),
+            const SizedBox(height: 4),
+            Text(
+              product.category,
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
+            ),
+            const SizedBox(height: 8),
+            Row(
+              children: [
+                const Icon(Icons.star, color: Colors.amber, size: 14),
+                const SizedBox(width: 4),
+                Text(
+                  "${product.rating.toStringAsFixed(1)}",
+                  style: const TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+              ],
+            ),
+            const SizedBox(height: 8),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  "₹${product.price.toStringAsFixed(2)}",
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                    color: Colors.black87,
+                  ),
+                ),
+                InkWell(
+                  onTap: () {
+                    final cartItem = CartItem(
+                      id: product.id,
+                      name: product.name,
+                      title: product.name,
+                      brand: product.category,
+                      size: "Standard",
+                      price: product.price,
+                      imagePath: product.image,
+                      imageUrl: product.image,
+                    );
+                    context.read<CartData>().addItem(cartItem);
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (_) => const CartPage()),
+                    );
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(content: Text("Item added to cart ")),
+                    );
+                  },
+                  child: Container(
+                    height: 32,
+                    width: 32,
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF5A9CA0),
+                      shape: BoxShape.circle,
+                    ),
+                    child: const Icon(Icons.add, color: Colors.white, size: 20),
+                  ),
+                ),
+              ],
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  /// Fetches Real Products from Supabase
   Widget _buildRealBestsellersList() {
     return SizedBox(
       height: 260,
@@ -415,7 +528,10 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
                       //  Category
                       Text(
                         product.category,
-                        style: const TextStyle(color: Colors.grey, fontSize: 12),
+                        style: const TextStyle(
+                          color: Colors.grey,
+                          fontSize: 12,
+                        ),
                       ),
 
                       const SizedBox(height: 8),
@@ -427,7 +543,10 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
                           const SizedBox(width: 4),
                           Text(
                             "${product.rating.toStringAsFixed(1)}",
-                            style: const TextStyle(fontSize: 12, color: Colors.grey),
+                            style: const TextStyle(
+                              fontSize: 12,
+                              color: Colors.grey,
+                            ),
                           ),
                         ],
                       ),
@@ -469,11 +588,15 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
 
                               Navigator.push(
                                 context,
-                                MaterialPageRoute(builder: (_) => const CartPage()),
+                                MaterialPageRoute(
+                                  builder: (_) => const CartPage(),
+                                ),
                               );
 
                               ScaffoldMessenger.of(context).showSnackBar(
-                                const SnackBar(content: Text("Item added to cart ")),
+                                const SnackBar(
+                                  content: Text("Item added to cart "),
+                                ),
                               );
                             },
                             child: Container(
@@ -502,7 +625,6 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
       },
     );
   }
-
 
   /// Custom Bottom Navigation Bar
   Widget _buildBottomNavigationBar() {
@@ -553,16 +675,15 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => const AccountPage(), // Ensure this widget name matches your class
+              builder: (context) =>
+                  const AccountPage(), // Ensure this widget name matches your class
             ),
           );
         } else if (index == 3) {
           // --- NAVIGATION TO ORDER SCREEN ---
           Navigator.push(
             context,
-            MaterialPageRoute(
-              builder: (context) => OrdersPage(),
-            ),
+            MaterialPageRoute(builder: (context) => OrdersPage()),
           );
         } else {
           // For other buttons, just update the UI selection

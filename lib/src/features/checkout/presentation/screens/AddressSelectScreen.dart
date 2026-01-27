@@ -8,7 +8,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 
 import 'AddressModel.dart';
 import 'AddressStore.dart';
-import 'payment.dart';
+import 'paymentMethodScreen.dart';
 
 class AddressSelectScreen extends StatefulWidget {
   const AddressSelectScreen({super.key});
