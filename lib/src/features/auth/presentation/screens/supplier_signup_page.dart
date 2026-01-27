@@ -19,7 +19,6 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
   bool _isLoading = false;
   final SupabaseClient supabase = Supabase.instance.client;
 
-
   // Controllers
   final _nameController = TextEditingController();
   final _emailController = TextEditingController();
@@ -124,7 +123,8 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
       final userId = user.id;
 
       // 📂 STEP 2: UPLOAD DOCUMENT
-      final fileName = 'drug_license_${userId}_${DateTime.now().millisecondsSinceEpoch}';
+      final fileName =
+          'drug_license_${userId}_${DateTime.now().millisecondsSinceEpoch}';
       final documentUrl = await SupabaseService.uploadDocument(
         bucket: 'drug-licenses',
         file: _selectedDocument!,
@@ -159,13 +159,16 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
       // ✅ SUCCESS UI & NAVIGATION
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Registration Submitted! Welcome.'), backgroundColor: Colors.green),
+          const SnackBar(
+            content: Text('Registration Submitted! Welcome.'),
+            backgroundColor: Colors.green,
+          ),
         );
 
         // Navigate to Supplier Dashboard
         Navigator.of(context).pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const SupplierDashboard()),
-              (route) => false,
+          (route) => false,
         );
       }
     } on AuthException catch (e) {
@@ -198,156 +201,156 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
           child: _isLoading
               ? const Center(child: CircularProgressIndicator())
               : SingleChildScrollView(
-            padding: const EdgeInsets.symmetric(
-              horizontal: 24,
-              vertical: 20,
-            ),
-            child: Form(
-              key: _formKey,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(
-                      Icons.arrow_back_ios_new,
-                      color: Color(0xFF6AA39B),
+                  padding: const EdgeInsets.symmetric(
+                    horizontal: 24,
+                    vertical: 20,
+                  ),
+                  child: Form(
+                    key: _formKey,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        IconButton(
+                          onPressed: () => Navigator.pop(context),
+                          icon: const Icon(
+                            Icons.arrow_back_ios_new,
+                            color: Color(0xFF6AA39B),
+                          ),
+                        ),
+                        const SizedBox(height: 10),
+                        const Text(
+                          'Supplier Registration',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.bold,
+                            letterSpacing: -0.5,
+                          ),
+                        ),
+                        const Text(
+                          'Join our network and grow your business',
+                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                        ),
+                        const SizedBox(height: 30),
+
+                        _sectionTitle('Basic Info'),
+                        _buildTextField(
+                          _nameController,
+                          'Contact Person Name',
+                          Icons.person,
+                        ),
+                        _buildTextField(
+                          _emailController,
+                          'Email Address',
+                          Icons.email,
+                          keyboardType: TextInputType.emailAddress,
+                        ),
+                        _buildTextField(
+                          _phoneController,
+                          'Phone Number',
+                          Icons.phone,
+                          keyboardType: TextInputType.phone,
+                        ),
+                        _buildTextField(
+                          _passwordController,
+                          'Password',
+                          Icons.lock,
+                          keyboardType: TextInputType.visiblePassword,
+                        ),
+
+                        const SizedBox(height: 20),
+                        _sectionTitle('Location'),
+                        _buildTextField(
+                          _countryController,
+                          'Country',
+                          Icons.public,
+                        ),
+                        _buildTextField(_stateController, 'State', Icons.map),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: _buildTextField(
+                                _cityController,
+                                'City',
+                                Icons.location_city,
+                              ),
+                            ),
+                            const SizedBox(width: 15),
+                            Expanded(
+                              child: _buildTextField(
+                                _pincodeController,
+                                'Pincode',
+                                Icons.pin_drop,
+                                keyboardType: TextInputType.number,
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 20),
+                        _sectionTitle('Business Details'),
+                        _buildTextField(
+                          _companyNameController,
+                          'Company Name',
+                          Icons.business,
+                        ),
+                        _buildDropdown(),
+                        _buildTextField(
+                          _companyAddressController,
+                          'Full Business Address',
+                          Icons.home_work,
+                          maxLines: 3,
+                        ),
+
+                        const SizedBox(height: 20),
+                        _sectionTitle('Legal & Documents'),
+                        _buildTextField(
+                          _drugLicenseNumberController,
+                          'Drug License Number',
+                          Icons.description,
+                        ),
+                        _buildDatePicker(),
+                        const SizedBox(height: 10),
+                        _buildFilePicker(),
+                        const SizedBox(height: 20),
+                        _buildTextField(
+                          _gstNumberController,
+                          'GST Number',
+                          Icons.receipt_long,
+                        ),
+                        _buildTextField(
+                          _panNumberController,
+                          'PAN Number',
+                          Icons.credit_card,
+                        ),
+
+                        const SizedBox(height: 40),
+                        SizedBox(
+                          width: double.infinity,
+                          height: 56,
+                          child: ElevatedButton(
+                            onPressed: _submitForm,
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: const Color(0xFF6AA39B),
+                              foregroundColor: Colors.white,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(30),
+                              ),
+                              elevation: 2,
+                            ),
+                            child: const Text(
+                              'Submit for Verification',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const SizedBox(height: 30),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 10),
-                  const Text(
-                    'Supplier Registration',
-                    style: TextStyle(
-                      fontSize: 28,
-                      fontWeight: FontWeight.bold,
-                      letterSpacing: -0.5,
-                    ),
-                  ),
-                  const Text(
-                    'Join our network and grow your business',
-                    style: TextStyle(color: Colors.grey, fontSize: 16),
-                  ),
-                  const SizedBox(height: 30),
-
-                  _sectionTitle('Basic Info'),
-                  _buildTextField(
-                    _nameController,
-                    'Contact Person Name',
-                    Icons.person,
-                  ),
-                  _buildTextField(
-                    _emailController,
-                    'Email Address',
-                    Icons.email,
-                    keyboardType: TextInputType.emailAddress,
-                  ),
-                  _buildTextField(
-                    _phoneController,
-                    'Phone Number',
-                    Icons.phone,
-                    keyboardType: TextInputType.phone,
-                  ),
-                  _buildTextField(
-                    _passwordController,
-                    'Password',
-                    Icons.lock,
-                    keyboardType: TextInputType.visiblePassword,
-                  ),
-
-                  const SizedBox(height: 20),
-                  _sectionTitle('Location'),
-                  _buildTextField(
-                    _countryController,
-                    'Country',
-                    Icons.public,
-                  ),
-                  _buildTextField(_stateController, 'State', Icons.map),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _buildTextField(
-                          _cityController,
-                          'City',
-                          Icons.location_city,
-                        ),
-                      ),
-                      const SizedBox(width: 15),
-                      Expanded(
-                        child: _buildTextField(
-                          _pincodeController,
-                          'Pincode',
-                          Icons.pin_drop,
-                          keyboardType: TextInputType.number,
-                        ),
-                      ),
-                    ],
-                  ),
-
-                  const SizedBox(height: 20),
-                  _sectionTitle('Business Details'),
-                  _buildTextField(
-                    _companyNameController,
-                    'Company Name',
-                    Icons.business,
-                  ),
-                  _buildDropdown(),
-                  _buildTextField(
-                    _companyAddressController,
-                    'Full Business Address',
-                    Icons.home_work,
-                    maxLines: 3,
-                  ),
-
-                  const SizedBox(height: 20),
-                  _sectionTitle('Legal & Documents'),
-                  _buildTextField(
-                    _drugLicenseNumberController,
-                    'Drug License Number',
-                    Icons.description,
-                  ),
-                  _buildDatePicker(),
-                  const SizedBox(height: 10),
-                  _buildFilePicker(),
-                  const SizedBox(height: 20),
-                  _buildTextField(
-                    _gstNumberController,
-                    'GST Number',
-                    Icons.receipt_long,
-                  ),
-                  _buildTextField(
-                    _panNumberController,
-                    'PAN Number',
-                    Icons.credit_card,
-                  ),
-
-                  const SizedBox(height: 40),
-                  SizedBox(
-                    width: double.infinity,
-                    height: 56,
-                    child: ElevatedButton(
-                      onPressed: _submitForm,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF6AA39B),
-                        foregroundColor: Colors.white,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                        elevation: 2,
-                      ),
-                      child: const Text(
-                        'Submit for Verification',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 30),
-                ],
-              ),
-            ),
-          ),
+                ),
         ),
       ),
     );
@@ -369,12 +372,12 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
   }
 
   Widget _buildTextField(
-      TextEditingController controller,
-      String label,
-      IconData icon, {
-        TextInputType keyboardType = TextInputType.text,
-        int maxLines = 1,
-      }) {
+    TextEditingController controller,
+    String label,
+    IconData icon, {
+    TextInputType keyboardType = TextInputType.text,
+    int maxLines = 1,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: TextFormField(
@@ -397,7 +400,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
           contentPadding: const EdgeInsets.all(16),
         ),
         validator: (value) =>
-        value == null || value.isEmpty ? 'This field is required' : null,
+            value == null || value.isEmpty ? 'This field is required' : null,
       ),
     );
   }
@@ -406,7 +409,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 16),
       child: DropdownButtonFormField<String>(
-        value: _selectedCompanyType,
+        initialValue: _selectedCompanyType,
         decoration: InputDecoration(
           labelText: 'Company Type',
           prefixIcon: const Icon(Icons.category, size: 20),
@@ -422,7 +425,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
         }).toList(),
         onChanged: (value) => setState(() => _selectedCompanyType = value),
         validator: (value) =>
-        value == null ? 'Please select company type' : null,
+            value == null ? 'Please select company type' : null,
       ),
     );
   }

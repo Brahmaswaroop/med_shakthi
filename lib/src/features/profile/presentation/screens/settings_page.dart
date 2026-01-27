@@ -71,7 +71,7 @@ class _SettingsPageState extends State<SettingsPage> {
                     TextButton(
                       onPressed: () => Navigator.pop(context),
                       child: const Text("OK"),
-                    )
+                    ),
                   ],
                 ),
               );
@@ -108,7 +108,7 @@ class _SettingsPageState extends State<SettingsPage> {
       child: SwitchListTile(
         value: value,
         onChanged: onChanged,
-        activeColor: const Color(0xFF6AA39B),
+        activeThumbColor: const Color(0xFF6AA39B),
         title: Text(title, style: const TextStyle(fontWeight: FontWeight.w600)),
         subtitle: Text(subtitle),
       ),
@@ -138,11 +138,12 @@ class _SettingsPageState extends State<SettingsPage> {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text(title,
-                      style: const TextStyle(fontWeight: FontWeight.w600)),
+                  Text(
+                    title,
+                    style: const TextStyle(fontWeight: FontWeight.w600),
+                  ),
                   const SizedBox(height: 3),
-                  Text(subtitle,
-                      style: TextStyle(color: Colors.grey.shade600)),
+                  Text(subtitle, style: TextStyle(color: Colors.grey.shade600)),
                 ],
               ),
             ),

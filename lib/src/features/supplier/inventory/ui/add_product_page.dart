@@ -4,7 +4,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 
-
 class AddProductPage extends StatefulWidget {
   const AddProductPage({super.key});
 
@@ -44,7 +43,10 @@ class _AddProductPageState extends State<AddProductPage> {
       final data = await supabase
           .from('suppliers')
           .select('supplier_code')
-          .eq('user_id', user.id) // changed from 'id' to 'user_id' based on your schema
+          .eq(
+            'user_id',
+            user.id,
+          ) // changed from 'id' to 'user_id' based on your schema
           .maybeSingle();
 
       if (mounted) {
@@ -70,11 +72,13 @@ class _AddProductPageState extends State<AddProductPage> {
     if (imageFile == null) return null;
     final fileName = 'product_${DateTime.now().millisecondsSinceEpoch}.jpg';
     try {
-      await supabase.storage.from('product-images').upload(
-        fileName,
-        imageFile!,
-        fileOptions: const FileOptions(upsert: true),
-      );
+      await supabase.storage
+          .from('product-images')
+          .upload(
+            fileName,
+            imageFile!,
+            fileOptions: const FileOptions(upsert: true),
+          );
       return supabase.storage.from('product-images').getPublicUrl(fileName);
     } catch (e) {
       debugPrint('Image upload error: $e');
@@ -106,17 +110,22 @@ class _AddProductPageState extends State<AddProductPage> {
       if (!mounted) return;
 
       ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Product Added Successfully!'), backgroundColor: Colors.green),
+        const SnackBar(
+          content: Text('Product Added Successfully!'),
+          backgroundColor: Colors.green,
+        ),
       );
 
       // FIXED: Navigate back to Supplier Dashboard, not Pharmacy Home
       Navigator.pop(context);
-
     } catch (e) {
       debugPrint('Save product error: $e');
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Failed to save: $e'), backgroundColor: Colors.red),
+          SnackBar(
+            content: Text('Failed to save: $e'),
+            backgroundColor: Colors.red,
+          ),
         );
       }
     } finally {
@@ -141,7 +150,10 @@ class _AddProductPageState extends State<AddProductPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF2F6F5),
       appBar: AppBar(
-        title: const Text('Add New Product', style: TextStyle(color: Colors.black)),
+        title: const Text(
+          'Add New Product',
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
@@ -200,17 +212,22 @@ class _AddProductPageState extends State<AddProductPage> {
         readOnly: true,
         onTap: pickExpiryDate,
         validator: (v) => v!.isEmpty ? 'Select expiry date' : null,
-        decoration: _inputDecoration("Expiry Date").copyWith(suffixIcon: const Icon(Icons.calendar_today)),
+        decoration: _inputDecoration(
+          "Expiry Date",
+        ).copyWith(suffixIcon: const Icon(Icons.calendar_today)),
       ),
     );
   }
 
   Widget _categoryDropdown() {
     return DropdownButtonFormField<String>(
-      value: category,
-      items: ['Medicine', 'Supplement', 'Surgical', 'Device']
-          .map((e) => DropdownMenuItem(value: e, child: Text(e)))
-          .toList(),
+      initialValue: category,
+      items: [
+        'Medicine',
+        'Supplement',
+        'Surgical',
+        'Device',
+      ].map((e) => DropdownMenuItem(value: e, child: Text(e))).toList(),
       onChanged: (v) => setState(() => category = v!),
       decoration: _inputDecoration("Category"),
     );
@@ -222,13 +239,20 @@ class _AddProductPageState extends State<AddProductPage> {
       height: 54,
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
-          backgroundColor: const Color(0xFF4CA6A8), // Matches your Supplier Theme
-          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(18)),
+          backgroundColor: const Color(
+            0xFF4CA6A8,
+          ), // Matches your Supplier Theme
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(18),
+          ),
         ),
         onPressed: _isLoading ? null : saveProduct,
         child: _isLoading
             ? const CircularProgressIndicator(color: Colors.white)
-            : const Text('Save Product', style: TextStyle(color: Colors.white, fontSize: 16)),
+            : const Text(
+                'Save Product',
+                style: TextStyle(color: Colors.white, fontSize: 16),
+              ),
       ),
     );
   }
@@ -247,17 +271,20 @@ class _AddProductPageState extends State<AddProductPage> {
         ),
         child: imageFile == null
             ? const Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Icon(Icons.add_a_photo, size: 40, color: Colors.grey),
-            SizedBox(height: 8),
-            Text('Tap to add product image', style: TextStyle(color: Colors.grey)),
-          ],
-        )
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Icon(Icons.add_a_photo, size: 40, color: Colors.grey),
+                  SizedBox(height: 8),
+                  Text(
+                    'Tap to add product image',
+                    style: TextStyle(color: Colors.grey),
+                  ),
+                ],
+              )
             : ClipRRect(
-          borderRadius: BorderRadius.circular(20),
-          child: Image.file(imageFile!, fit: BoxFit.cover),
-        ),
+                borderRadius: BorderRadius.circular(20),
+                child: Image.file(imageFile!, fit: BoxFit.cover),
+              ),
       ),
     );
   }
@@ -267,11 +294,18 @@ class _AddProductPageState extends State<AddProductPage> {
       labelText: label,
       filled: true,
       fillColor: Colors.white,
-      border: OutlineInputBorder(borderRadius: BorderRadius.circular(16), borderSide: BorderSide.none),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(16),
+        borderSide: BorderSide.none,
+      ),
     );
   }
 
-  Widget _input(String label, TextEditingController controller, {TextInputType keyboard = TextInputType.text}) {
+  Widget _input(
+    String label,
+    TextEditingController controller, {
+    TextInputType keyboard = TextInputType.text,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 14),
       child: TextFormField(

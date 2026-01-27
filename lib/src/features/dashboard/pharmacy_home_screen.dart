@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart'; // Added Provider
 import 'package:med_shakthi/src/features/cart/presentation/screens/cart_page.dart';
+import 'package:med_shakthi/src/features/cart/data/cart_data.dart'; // Added CartData
+import 'package:med_shakthi/src/features/cart/data/cart_item.dart'; // Added CartItem
 import 'package:med_shakthi/src/features/category/category_ui.dart';
 import 'package:med_shakthi/src/features/products/presentation/screens/product_page.dart';
 import 'package:med_shakthi/src/features/profile/presentation/screens/profile_screen.dart';
@@ -163,24 +166,30 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
                 ),
               ),
             ),
-            Positioned(
-              top: -2,
-              right: -2,
-              child: Container(
-                padding: const EdgeInsets.all(4),
-                decoration: const BoxDecoration(
-                  color: Color(0xFF1E88E5),
-                  shape: BoxShape.circle,
-                ),
-                child: const Text(
-                  '0',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 10,
-                    fontWeight: FontWeight.bold,
+            // Reactive Cart Badge
+            Consumer<CartData>(
+              builder: (context, cartData, child) {
+                if (cartData.items.isEmpty) return const SizedBox.shrink();
+                return Positioned(
+                  top: -2,
+                  right: -2,
+                  child: Container(
+                    padding: const EdgeInsets.all(4),
+                    decoration: const BoxDecoration(
+                      color: Color(0xFF1E88E5),
+                      shape: BoxShape.circle,
+                    ),
+                    child: Text(
+                      '${cartData.items.length}', // Dynamic Count
+                      style: const TextStyle(
+                        color: Colors.white,
+                        fontSize: 10,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                   ),
-                ),
-              ),
+                );
+              },
             ),
           ],
         ),
@@ -365,17 +374,43 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
                         fontSize: 16,
                       ),
                     ),
-                    Container(
-                      height: 32,
-                      width: 32,
-                      decoration: const BoxDecoration(
-                        color: Color(0xFF5A9CA0),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.add,
-                        color: Colors.white,
-                        size: 20,
+                    GestureDetector(
+                      onTap: () {
+                        // Add to Cart Logic
+                        final cartData = Provider.of<CartData>(
+                          context,
+                          listen: false,
+                        );
+                        cartData.addItem(
+                          CartItem(
+                            id: product.id,
+                            name: product.name,
+                            price: product.price,
+                            imagePath: product.image,
+                            quantity: 1,
+                          ),
+                        );
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(
+                            content: Text('${product.name} added to cart'),
+                            duration: const Duration(seconds: 1),
+                            behavior: SnackBarBehavior.floating,
+                            backgroundColor: const Color(0xFF5A9CA0),
+                          ),
+                        );
+                      },
+                      child: Container(
+                        height: 32,
+                        width: 32,
+                        decoration: const BoxDecoration(
+                          color: Color(0xFF5A9CA0),
+                          shape: BoxShape.circle,
+                        ),
+                        child: const Icon(
+                          Icons.add,
+                          color: Colors.white,
+                          size: 20,
+                        ),
                       ),
                     ),
                   ],

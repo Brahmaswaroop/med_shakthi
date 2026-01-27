@@ -84,7 +84,6 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
         duration: const Duration(seconds: 2),
       ),
     );
-
   }
 
   @override
@@ -129,7 +128,7 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
                       width: 80,
                       height: 90,
                       fit: BoxFit.contain,
-                      errorBuilder: (_, __, ___) => Container(
+                      errorBuilder: (_, _, _) => Container(
                         width: 80,
                         height: 90,
                         color: Colors.grey.shade200,
@@ -169,7 +168,7 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
                         ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -188,10 +187,7 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
                 children: [
                   const Text(
                     "Upload Product Image (Required)",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
 
@@ -250,7 +246,7 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
                               ),
                             ),
                           ),
-                        )
+                        ),
                       ],
                     ),
                 ],
@@ -271,21 +267,13 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
                 children: [
                   const Text(
                     "Select Return Reason",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 12),
                   DropdownButtonFormField<String>(
-                    value: selectedReason,
+                    initialValue: selectedReason,
                     items: reasons
-                        .map(
-                          (r) => DropdownMenuItem(
-                        value: r,
-                        child: Text(r),
-                      ),
-                    )
+                        .map((r) => DropdownMenuItem(value: r, child: Text(r)))
                         .toList(),
                     onChanged: (val) {
                       if (val != null) {
@@ -319,10 +307,7 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
                 children: [
                   const Text(
                     "Explain Your Issue (Optional)",
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.bold,
-                    ),
+                    style: TextStyle(fontSize: 15, fontWeight: FontWeight.bold),
                   ),
                   const SizedBox(height: 10),
                   TextField(

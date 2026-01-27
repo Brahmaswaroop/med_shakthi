@@ -1,11 +1,9 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class CartItem {
   final String id;
   final String name; // Keeping 'name' for backward compatibility
   final String? title; // Made nullable
   final String? brand; // Made nullable
-  final String? size;  // Made nullable
+  final String? size; // Made nullable
   final double price;
   final String? imagePath; // Made nullable
   int quantity;
@@ -16,7 +14,7 @@ class CartItem {
     required this.name,
     this.title, // Optional
     this.brand, // Optional
-    this.size,  // Optional
+    this.size, // Optional
     required this.price,
     this.imagePath, // Optional
     this.quantity = 1,
@@ -32,7 +30,7 @@ class CartItem {
   // Get total price for this item
   double get totalPrice => price * quantity;
 
-  // Convert CartItem to Map for Firestore storage
+  // Convert CartItem to Map for local/remote storage
   Map<String, dynamic> toMap() {
     return {
       'id': id,
@@ -44,11 +42,11 @@ class CartItem {
       'quantity': quantity,
       'imagePath': imagePath,
       'imageUrl': imageUrl,
-      'timestamp': FieldValue.serverTimestamp(),
+      // Removed serverTimestamp for JSON compatibility
     };
   }
 
-  // Create CartItem from Firestore Map data
+  // Create CartItem from Map data
   factory CartItem.fromMap(Map<String, dynamic> map) {
     return CartItem(
       id: map['id'] ?? '',

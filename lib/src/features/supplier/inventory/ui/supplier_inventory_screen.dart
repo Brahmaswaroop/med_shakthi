@@ -8,7 +8,8 @@ class SupplierInventoryScreen extends StatefulWidget {
   const SupplierInventoryScreen({super.key});
 
   @override
-  State<SupplierInventoryScreen> createState() => _SupplierInventoryScreenState();
+  State<SupplierInventoryScreen> createState() =>
+      _SupplierInventoryScreenState();
 }
 
 class _SupplierInventoryScreenState extends State<SupplierInventoryScreen> {
@@ -50,9 +51,9 @@ class _SupplierInventoryScreenState extends State<SupplierInventoryScreen> {
         const SnackBar(content: Text('Product deleted successfully')),
       );
     } catch (e) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Error deleting product: $e')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(SnackBar(content: Text('Error deleting product: $e')));
     }
   }
 
@@ -61,7 +62,10 @@ class _SupplierInventoryScreenState extends State<SupplierInventoryScreen> {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FA),
       appBar: AppBar(
-        title: const Text('My Inventory', style: TextStyle(color: Colors.black)),
+        title: const Text(
+          'My Inventory',
+          style: TextStyle(color: Colors.black),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
         iconTheme: const IconThemeData(color: Colors.black),
@@ -82,27 +86,27 @@ class _SupplierInventoryScreenState extends State<SupplierInventoryScreen> {
           : _supplierCode == null
           ? const Center(child: Text("Supplier profile not found"))
           : FutureBuilder<List<Product>>(
-        future: _productRepo.getSupplierProducts(_supplierCode!),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Center(child: Text("Error: ${snapshot.error}"));
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return _buildEmptyState();
-          }
+              future: _productRepo.getSupplierProducts(_supplierCode!),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const Center(child: CircularProgressIndicator());
+                } else if (snapshot.hasError) {
+                  return Center(child: Text("Error: ${snapshot.error}"));
+                } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+                  return _buildEmptyState();
+                }
 
-          return ListView.separated(
-            padding: const EdgeInsets.all(16),
-            itemCount: snapshot.data!.length,
-            separatorBuilder: (_, __) => const SizedBox(height: 12),
-            itemBuilder: (context, index) {
-              final product = snapshot.data![index];
-              return _buildInventoryItem(product);
-            },
-          );
-        },
-      ),
+                return ListView.separated(
+                  padding: const EdgeInsets.all(16),
+                  itemCount: snapshot.data!.length,
+                  separatorBuilder: (_, _) => const SizedBox(height: 12),
+                  itemBuilder: (context, index) {
+                    final product = snapshot.data![index];
+                    return _buildInventoryItem(product);
+                  },
+                );
+              },
+            ),
     );
   }
 
@@ -144,7 +148,10 @@ class _SupplierInventoryScreenState extends State<SupplierInventoryScreen> {
               children: [
                 Text(
                   product.name,
-                  style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                  style: const TextStyle(
+                    fontWeight: FontWeight.bold,
+                    fontSize: 16,
+                  ),
                 ),
                 const SizedBox(height: 4),
                 Text(

@@ -6,7 +6,6 @@ import 'package:med_shakthi/src/features/wishlist/presentation/screens/wishlist_
 import '../profile/presentation/screens/supplier_category_page.dart';
 import '../profile/presentation/screens/supplier_profile_screen.dart';
 
-
 class SupplierDashboard extends StatefulWidget {
   const SupplierDashboard({super.key});
 
@@ -21,12 +20,11 @@ class _SupplierDashboardState extends State<SupplierDashboard> {
     setState(() => _selectedIndex = index);
   }
 
-
   late final List<Widget> _pages = [
     const SupplierDashboardHome(),
     const SupplierCategoryPage(),
     WishlistPage(wishlistService: WishlistService(userId: '')),
-     OrderScreen(),
+    OrderScreen(),
     const SupplierProfileScreen(),
   ];
 
@@ -236,7 +234,7 @@ class SupplierDashboardHome extends StatelessWidget {
       child: ListView.separated(
         scrollDirection: Axis.horizontal,
         itemCount: cats.length,
-        separatorBuilder: (_, __) => const SizedBox(width: 25),
+        separatorBuilder: (_, _) => const SizedBox(width: 25),
         itemBuilder: (context, index) {
           return InkWell(
             onTap: () {},

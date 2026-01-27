@@ -56,16 +56,14 @@ class _TopBar extends StatefulWidget {
 }
 
 class _TopBarState extends State<_TopBar> {
-
   // ✅ SHARED INSTANCE (FIX)
-  static final WishlistService wishlistService =
-  WishlistService(userId: 'demo-user');
-
+  static final WishlistService wishlistService = WishlistService(
+    userId: 'demo-user',
+  );
 
   @override
   Widget build(BuildContext context) {
-    final bool isWishlisted =
-    wishlistService.isInWishlist(widget.product.id);
+    final bool isWishlisted = wishlistService.isInWishlist(widget.product.id);
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
@@ -97,8 +95,7 @@ class _TopBarState extends State<_TopBar> {
           InkWell(
             onTap: () async {
               if (isWishlisted) {
-                await wishlistService
-                    .removeFromWishlist(widget.product.id);
+                await wishlistService.removeFromWishlist(widget.product.id);
               } else {
                 await wishlistService.addToWishlist(
                   WishlistItem(
@@ -145,8 +142,8 @@ class _ProductImageCard extends StatelessWidget {
         imageUrl,
         height: 230,
         fit: BoxFit.contain,
-        errorBuilder: (_, __, ___) =>
-        const Icon(Icons.image_not_supported, size: 80),
+        errorBuilder: (_, _, _) =>
+            const Icon(Icons.image_not_supported, size: 80),
       ),
     );
   }
@@ -168,16 +165,10 @@ class _ProductInfoSection extends StatelessWidget {
         children: [
           Text(
             product.name,
-            style: const TextStyle(
-              fontSize: 20,
-              fontWeight: FontWeight.w600,
-            ),
+            style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 6),
-          Text(
-            product.category,
-            style: const TextStyle(color: Colors.grey),
-          ),
+          Text(product.category, style: const TextStyle(color: Colors.grey)),
           const SizedBox(height: 12),
           Row(
             children: [
@@ -189,10 +180,7 @@ class _ProductInfoSection extends StatelessWidget {
           const SizedBox(height: 16),
           Text(
             "\$${product.price}",
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
-            ),
+            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
           ),
         ],
       ),
@@ -225,10 +213,7 @@ class _SelectPharmacyCard extends StatelessWidget {
                 style: TextStyle(fontSize: 14),
               ),
             ),
-            Text(
-              '\$18.99',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
+            Text('\$18.99', style: TextStyle(fontWeight: FontWeight.bold)),
           ],
         ),
       ),

@@ -247,7 +247,7 @@ class _AddProductPageState extends State<AddProductPage> {
 
   Widget _categoryDropdown() {
     return DropdownButtonFormField<String>(
-      value: category,
+      initialValue: category,
       style: const TextStyle(color: Colors.black),
       dropdownColor: Colors.white,
       items: const [

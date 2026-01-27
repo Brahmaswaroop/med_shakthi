@@ -114,7 +114,10 @@ class _OrdersPageState extends State<OrdersPage> {
     return Scaffold(
       backgroundColor: const Color(0xFFF7F8FA),
       appBar: AppBar(
-        title: const Text("Orders", style: TextStyle(fontWeight: FontWeight.bold)),
+        title: const Text(
+          "Orders",
+          style: TextStyle(fontWeight: FontWeight.bold),
+        ),
         backgroundColor: Colors.white,
         elevation: 0,
       ),
@@ -129,7 +132,7 @@ class _OrdersPageState extends State<OrdersPage> {
               padding: const EdgeInsets.symmetric(horizontal: 20),
               scrollDirection: Axis.horizontal,
               itemCount: statusList.length,
-              separatorBuilder: (_, __) => const SizedBox(width: 10),
+              separatorBuilder: (_, _) => const SizedBox(width: 10),
               itemBuilder: (context, index) {
                 final status = statusList[index];
                 final isSelected = selectedStatus == status;
@@ -165,12 +168,12 @@ class _OrdersPageState extends State<OrdersPage> {
             child: isLoading
                 ? const Center(child: CircularProgressIndicator())
                 : filteredOrders.isEmpty
-                    ? const Center(child: Text("No orders found"))
-                    : ListView.builder(
-                        itemCount: filteredOrders.length,
-                        itemBuilder: (context, index) =>
-                            _orderCard(context, filteredOrders[index]),
-                      ),
+                ? const Center(child: Text("No orders found"))
+                : ListView.builder(
+                    itemCount: filteredOrders.length,
+                    itemBuilder: (context, index) =>
+                        _orderCard(context, filteredOrders[index]),
+                  ),
           ),
         ],
       ),
@@ -263,10 +266,7 @@ class _OrdersPageState extends State<OrdersPage> {
         color: color.withOpacity(0.15),
         borderRadius: BorderRadius.circular(20),
       ),
-      child: Text(
-        status,
-        style: TextStyle(color: color, fontSize: 12),
-      ),
+      child: Text(status, style: TextStyle(color: color, fontSize: 12)),
     );
   }
 }
