@@ -48,6 +48,7 @@ dependencies:
   fl_chart: ^1.1.1
   shared_preferences: ^2.5.4
   package_info_plus: ^9.0.0
+  csv: ^6.0.0
 
 
 dev_dependencies:
@@ -76,6 +77,7 @@ flutter:
   assets:
     - assets/images/
     - assets/icons/
+    - assets/data/
     - .env
 
   # An image asset can refer to one or more resolution-specific "variants", see

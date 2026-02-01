@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:med_shakthi/src/features/category/category_ui.dart';
+import 'package:med_shakthi/src/features/category/category_products_page.dart';
+import 'package:med_shakthi/src/features/category/devices_page.dart';
 import 'package:med_shakthi/src/features/products/data/repositories/product_repository.dart';
 import 'package:med_shakthi/src/features/wishlist/presentation/screens/wishlist_page.dart';
 import 'package:med_shakthi/src/features/wishlist/data/wishlist_service.dart';
+import 'package:med_shakthi/src/features/wishlist/data/models/wishlist_item_model.dart';
 import 'package:med_shakthi/src/features/cart/presentation/screens/cart_page.dart';
 import 'package:med_shakthi/src/features/orders/orders_page.dart';
 import 'package:med_shakthi/src/features/products/presentation/screens/product_page.dart';
@@ -15,6 +18,7 @@ import 'package:med_shakthi/src/features/cart/data/cart_data.dart';
 import 'package:med_shakthi/src/features/cart/data/cart_item.dart';
 import 'package:med_shakthi/src/features/products/data/models/product_model.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:med_shakthi/src/features/search/search_page.dart';
 
 /// This screen implements the "Med Shakti home page" for Retailers
 class PharmacyHomeScreen extends StatefulWidget {
@@ -53,6 +57,21 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
         ],
       ),
       bottomNavigationBar: _buildBottomNavigationBar(),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => const AiAssistantPage()),
+          );
+        },
+        backgroundColor: const Color(0xFF5A9CA0),
+        child: const Icon(
+          Icons.smart_toy,
+          color: Colors.white,
+          size: 28,
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 
@@ -69,7 +88,7 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
             const SizedBox(height: 24),
             // MODIFIED: Switched back to RecentPurchaseCard
             // When no order exists, this card will show the Promo Banner design.
-            const RecentPurchaseCard(),
+            const PromoBannerSlider(),
             const SizedBox(height: 24),
             _buildSectionTitle("Categories", "See All", () {
               setState(() => _selectedIndex = 1);
@@ -129,26 +148,36 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
 
         //  SEARCH BAR
         Expanded(
-          child: Container(
-            height: 50,
-            padding: const EdgeInsets.symmetric(horizontal: 16),
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(30),
-              border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
-            ),
-            child: const Row(
-              children: [
-                Icon(Icons.search, color: Colors.grey),
-                SizedBox(width: 8),
-                Expanded(
-                  child: Text(
-                    "Search medicine",
-                    style: TextStyle(color: Colors.grey, fontSize: 14),
-                  ),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => const SearchPage(),
                 ),
-                Icon(Icons.camera_alt_outlined, color: Colors.black),
-              ],
+              );
+            },
+            child: Container(
+              height: 50,
+              padding: const EdgeInsets.symmetric(horizontal: 16),
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(30),
+                border: Border.all(color: Colors.grey.withValues(alpha: 0.1)),
+              ),
+              child: const Row(
+                children: [
+                  Icon(Icons.search, color: Colors.grey),
+                  SizedBox(width: 8),
+                  Expanded(
+                    child: Text(
+                      "Search medicine",
+                      style: TextStyle(color: Colors.grey, fontSize: 14),
+                    ),
+                  ),
+                  Icon(Icons.camera_alt_outlined, color: Colors.black),
+                ],
+              ),
             ),
           ),
         ),
@@ -258,6 +287,8 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
           // Placeholder for categories, you can map real data here later
           _buildCategoryItem(Icons.medication, "Medicines", Colors.blue[100]!),
           const SizedBox(width: 20),
+          _buildCategoryItem(Icons.medical_services, "Devices", Colors.purple[100]!),
+          const SizedBox(width: 20),
           _buildCategoryItem(Icons.favorite, "Health", Colors.red[100]!),
           const SizedBox(width: 20),
           _buildCategoryItem(Icons.wb_sunny, "Vitamins", Colors.orange[100]!),
@@ -269,34 +300,57 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
   }
 
   Widget _buildCategoryItem(IconData icon, String label, Color color) {
-    return Column(
-      children: [
-        Container(
-          height: 60,
-          width: 60,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            shape: BoxShape.circle,
-            boxShadow: [
-              BoxShadow(
-                color: Colors.grey.withValues(alpha: 0.05),
-                blurRadius: 10,
-                spreadRadius: 2,
+    return GestureDetector(
+      onTap: () {
+        // Navigate to CategoryProductsPage when Medicines is tapped
+        if (label == "Medicines") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const CategoryProductsPage(
+                categoryName: "Medicines",
               ),
-            ],
+            ),
+          );
+        } else if (label == "Devices") {
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) => const DevicesPage(),
+            ),
+          );
+        }
+        // You can add navigation for other categories here as well
+      },
+      child: Column(
+        children: [
+          Container(
+            height: 60,
+            width: 60,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              shape: BoxShape.circle,
+              boxShadow: [
+                BoxShadow(
+                  color: Colors.grey.withValues(alpha: 0.05),
+                  blurRadius: 10,
+                  spreadRadius: 2,
+                ),
+              ],
+            ),
+            child: Center(child: Icon(icon, color: Colors.black54, size: 28)),
           ),
-          child: Center(child: Icon(icon, color: Colors.black54, size: 28)),
-        ),
-        const SizedBox(height: 8),
-        Text(
-          label,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.w500,
-            color: Colors.black87,
+          const SizedBox(height: 8),
+          Text(
+            label,
+            style: const TextStyle(
+              fontSize: 12,
+              fontWeight: FontWeight.w500,
+              color: Colors.black87,
+            ),
           ),
-        ),
-      ],
+        ],
+      ),
     );
   }
 
@@ -488,12 +542,18 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
           );
         }
 
-        return SizedBox(
-          height: 280, // Increased from 260
-          child: ListView.builder(
-            scrollDirection: Axis.horizontal,
-            clipBehavior: Clip.none,
-            itemCount: products.length,
+        return Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
+          child: GridView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+              crossAxisCount: 2,
+              childAspectRatio: 0.7,
+              crossAxisSpacing: 12,
+              mainAxisSpacing: 12,
+            ),
+            itemCount: products.length > 10 ? 10 : products.length,
             itemBuilder: (context, index) {
               final product = products[index];
 
@@ -506,8 +566,6 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
                   ),
                 ),
                 child: Container(
-                  width: 160,
-                  margin: const EdgeInsets.only(right: 16),
                   padding: const EdgeInsets.all(12),
                   decoration: BoxDecoration(
                     color: Colors.white,
@@ -523,19 +581,57 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      //  Image
+                      //  Image with heart icon
                       Expanded(
-                        child: Center(
-                          child: Image.network(
-                            product.image,
-                            fit: BoxFit.contain,
-                            errorBuilder: (c, e, s) => Container(
-                              color: Colors.grey[100],
-                              child: const Center(
-                                child: Icon(Icons.image_not_supported),
+                        child: Stack(
+                          children: [
+                            Center(
+                              child: Image.network(
+                                product.image,
+                                fit: BoxFit.contain,
+                                errorBuilder: (c, e, s) => Container(
+                                  color: Colors.grey[100],
+                                  child: const Center(
+                                    child: Icon(Icons.image_not_supported),
+                                  ),
+                                ),
                               ),
                             ),
-                          ),
+                            // Heart icon for wishlist
+                            Positioned(
+                              top: 0,
+                              right: 0,
+                              child: Consumer<WishlistService>(
+                                builder: (context, wishlistService, child) {
+                                  final isInWishlist = wishlistService.isInWishlist(product.id);
+                                  return GestureDetector(
+                                    onTap: () {
+                                      if (isInWishlist) {
+                                        wishlistService.removeFromWishlist(product.id);
+                                      } else {
+                                        // Convert Product to WishlistItem
+                                        final wishlistItem = WishlistItem(
+                                          id: product.id,
+                                          name: product.name,
+                                          price: product.price,
+                                          image: product.image,
+                                        );
+                                        wishlistService.addToWishlist(wishlistItem);
+                                      }
+                                    },
+                                    child: Container(
+                                      padding: const EdgeInsets.all(6),
+                                      child: Icon(
+                                        isInWishlist ? Icons.favorite : Icons.favorite_border,
+                                        color: isInWishlist ? Colors.red : Colors.grey[700],
+                                        size: 22,
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                          ],
                         ),
                       ),
 
@@ -666,14 +762,9 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
     final navItems = [
       {'icon': Icons.home, 'label': 'Home'},
       {'icon': Icons.grid_view, 'label': 'Category'},
-
-      //  Chatbot (Wishlist replaced)
+      {'icon': Icons.favorite_border, 'label': 'Wishlist'},
       {'icon': Icons.chat_bubble_outline, 'label': 'Chatbot'},
-
       {'icon': Icons.receipt_long, 'label': 'Order'},
-
-      //  AI (Profile replaced)
-      {'icon': Icons.smart_toy, 'label': 'AI'},
     ];
 
     return Container(
@@ -712,18 +803,12 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
     return GestureDetector(
       onTap: () {
         if (index == 4) {
-          //  AI Page
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (_) => const AiAssistantPage()),
-          );
-        } else if (index == 3) {
           //  Orders Page
           Navigator.push(
             context,
             MaterialPageRoute(builder: (_) => OrdersPage()),
           );
-        } else if (index == 2) {
+        } else if (index == 3) {
           //  Chatbot Page
           Navigator.push(
             context,
@@ -732,7 +817,7 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
             ),
           );
         } else {
-          // Home / Category
+          // Home / Category / Wishlist
           setState(() => _selectedIndex = index);
         }
       },
@@ -758,6 +843,155 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class PromoBannerSlider extends StatefulWidget {
+  const PromoBannerSlider({super.key});
+
+  @override
+  State<PromoBannerSlider> createState() => _PromoBannerSliderState();
+}
+
+class _PromoBannerSliderState extends State<PromoBannerSlider> {
+  final PageController _pageController = PageController();
+  int _currentPage = 0;
+
+  final List<Map<String, dynamic>> _banners = [
+    {
+      "title": "PAYDAY SALE",
+      "subtitle": "LOWEST PRICES ARE LIVE",
+      "description": "Up to 60% Off",
+      "colors": [Color(0xFF5A9CA0), Color(0xFF3A6B6E)],
+      "icon": Icons.shopping_bag_outlined,
+    },
+    {
+      "title": "SUPER DEAL",
+      "subtitle": "FLAT 25% OFF ON MEDICINES",
+      "description": "Use code: MED25",
+      "colors": [Color(0xFF1E88E5), Color(0xFF1565C0)],
+      "icon": Icons.local_offer_outlined,
+    },
+    {
+      "title": "HEALTH CHECKUP",
+      "subtitle": "FULL BODY SCREENING",
+      "description": "Book Now & Save ₹500",
+      "colors": [Color(0xFFE53935), Color(0xFFC62828)],
+      "icon": Icons.health_and_safety_outlined,
+    },
+  ];
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      children: [
+        SizedBox(
+          height: 170,
+          child: PageView.builder(
+            controller: _pageController,
+            onPageChanged: (index) {
+              setState(() {
+                _currentPage = index;
+              });
+            },
+            itemCount: _banners.length,
+            itemBuilder: (context, index) {
+              final banner = _banners[index];
+              return Container(
+                margin: const EdgeInsets.symmetric(horizontal: 4),
+                padding: const EdgeInsets.all(24),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(24),
+                  gradient: LinearGradient(
+                    colors: banner["colors"],
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                  ),
+                  boxShadow: [
+                    BoxShadow(
+                      color: banner["colors"][0].withValues(alpha: 0.3),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 10,
+                              vertical: 4,
+                            ),
+                            decoration: BoxDecoration(
+                              color: Colors.amber,
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Text(
+                              banner["title"],
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 12),
+                          Text(
+                            banner["subtitle"],
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              height: 1.2,
+                            ),
+                          ),
+                          const SizedBox(height: 8),
+                          Text(
+                            banner["description"],
+                            style: const TextStyle(
+                              color: Colors.white70,
+                              fontSize: 14,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    Icon(
+                      banner["icon"],
+                      color: Colors.white.withValues(alpha: 0.2),
+                      size: 80,
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+        const SizedBox(height: 12),
+        Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: List.generate(
+            _banners.length,
+            (index) => Container(
+              margin: const EdgeInsets.symmetric(horizontal: 4),
+              width: _currentPage == index ? 20 : 8,
+              height: 8,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(4),
+                color: _currentPage == index
+                    ? const Color(0xFF5A9CA0)
+                    : Colors.grey.withValues(alpha: 0.3),
+              ),
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
