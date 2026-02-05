@@ -5,6 +5,8 @@ import 'package:med_shakthi/src/features/auth/presentation/screens/supplier_sign
 import 'package:med_shakthi/src/features/auth/presentation/screens/signup_page.dart';
 import 'package:med_shakthi/src/features/dashboard/supplier_dashboard.dart';
 
+import 'forgot_password_page.dart';
+
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
@@ -194,7 +196,14 @@ class _LoginPageState extends State<LoginPage> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => const ForgotPasswordPage(),
+                          ),
+                        );
+                      },
                       child: const Text(
                         'Forgot Password?',
                         style: TextStyle(color: Colors.grey),
