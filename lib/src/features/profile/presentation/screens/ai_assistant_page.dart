@@ -59,17 +59,17 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7F9),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).appBarTheme.foregroundColor),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text(
+        title: Text(
           "AI Assistant ",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
         ),
         centerTitle: true,
       ),
@@ -89,8 +89,8 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
           // 🔹 Input Area
           Container(
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
-            decoration: const BoxDecoration(
-              color: Colors.white,
+            decoration: BoxDecoration(
+              color: Theme.of(context).cardColor,
               boxShadow: [
                 BoxShadow(
                   color: Colors.black12,
@@ -109,7 +109,9 @@ class _AiAssistantPageState extends State<AiAssistantPage> {
                     decoration: InputDecoration(
                       hintText: "Ask something...",
                       filled: true,
-                      fillColor: const Color(0xFFF1F3F6),
+                      fillColor: Theme.of(context).brightness == Brightness.dark 
+                          ? Colors.grey[900] 
+                          : const Color(0xFFF1F3F6),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(30),
                         borderSide: BorderSide.none,
@@ -155,8 +157,12 @@ class _ChatBubble extends StatelessWidget {
     final alignment = message.isUser
         ? Alignment.centerRight
         : Alignment.centerLeft;
-    final color = message.isUser ? const Color(0xFF5A9CA0) : Colors.white;
-    final textColor = message.isUser ? Colors.white : Colors.black87;
+    final color = message.isUser 
+        ? const Color(0xFF5A9CA0) 
+        : Theme.of(context).cardColor;
+    final textColor = message.isUser 
+        ? Colors.white 
+        : Theme.of(context).textTheme.bodyLarge?.color;
 
     return Align(
       alignment: alignment,

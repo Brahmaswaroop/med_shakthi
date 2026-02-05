@@ -15,7 +15,7 @@ class ProductPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FB),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Column(
           children: [
@@ -73,7 +73,7 @@ class _TopBarState extends State<_TopBar> {
               height: 32,
               width: 32,
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 shape: BoxShape.circle,
                 boxShadow: [
                   BoxShadow(
@@ -113,7 +113,7 @@ class _TopBarState extends State<_TopBar> {
           ),
 
           const SizedBox(width: 12),
-          const Icon(Icons.share),
+          Icon(Icons.share, color: Theme.of(context).iconTheme.color),
         ],
       ),
     );
@@ -133,7 +133,7 @@ class _ProductImageCard extends StatelessWidget {
       margin: const EdgeInsets.symmetric(horizontal: 24),
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
       ),
       child: Image.network(
@@ -166,7 +166,10 @@ class _ProductInfoSection extends StatelessWidget {
             style: const TextStyle(fontSize: 20, fontWeight: FontWeight.w600),
           ),
           const SizedBox(height: 6),
-          Text(product.category, style: const TextStyle(color: Colors.grey)),
+          Text(
+            product.category, 
+            style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color),
+          ),
           const SizedBox(height: 12),
           Row(
             children: [
@@ -198,7 +201,7 @@ class _SelectPharmacyCard extends StatelessWidget {
       child: Container(
         padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(18),
         ),
         child: Row(
@@ -230,8 +233,8 @@ class _BottomBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(16),
-      decoration: const BoxDecoration(
-        color: Colors.white,
+      decoration: BoxDecoration(
+        color: Theme.of(context).cardColor,
         boxShadow: [
           BoxShadow(
             color: Colors.black12,

@@ -214,7 +214,10 @@ class _OrdersPageState extends State<OrdersPage> {
             if (brand.isNotEmpty)
               Text(
                 brand,
-                style: const TextStyle(color: Colors.grey, fontSize: 12),
+                style: TextStyle(
+                  color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6), 
+                  fontSize: 12,
+                ),
               ),
 
             const SizedBox(height: 6),
@@ -223,7 +226,7 @@ class _OrdersPageState extends State<OrdersPage> {
             Text("₹$totalAmount • Qty: $qty"),
             Text(
               "Ordered on: $date",
-              style: const TextStyle(color: Colors.grey),
+              style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5)),
             ),
 
             const Divider(height: 20),

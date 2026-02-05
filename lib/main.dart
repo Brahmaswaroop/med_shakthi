@@ -10,6 +10,8 @@ import 'package:med_shakthi/src/features/auth/presentation/screens/login_page.da
 import 'package:med_shakthi/src/features/dashboard/supplier_dashboard.dart';
 import 'package:med_shakthi/src/features/cart/data/cart_data.dart';
 import 'package:med_shakthi/src/features/wishlist/data/wishlist_service.dart';
+import 'package:med_shakthi/src/core/theme/theme_provider.dart';
+import 'package:med_shakthi/src/core/theme/app_theme.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,7 +30,8 @@ Future<void> main() async {
       providers: [
         ChangeNotifierProvider(create: (_) => CartData()),
         ChangeNotifierProvider(create: (_) => AddressStore()),
-        ChangeNotifierProvider(create: (_) => WishlistService()), // ADD THIS
+        ChangeNotifierProvider(create: (_) => WishlistService()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
       child: const MyApp(),
     ),
@@ -40,16 +43,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Med Shakthi',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-        useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFF5F7F9),
-      ),
-      // Use AuthGate to decide which screen to show
-      home: const AuthGate(),
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Med Shakthi',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeProvider.isDarkMode ? ThemeMode.dark : ThemeMode.light,
+          // Use AuthGate to decide which screen to show
+          home: const AuthGate(),
+        );
+      },
     );
   }
 }

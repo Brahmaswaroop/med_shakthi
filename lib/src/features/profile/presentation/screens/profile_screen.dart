@@ -234,13 +234,16 @@ class _AccountPageState extends State<AccountPage> {
     // final selected = addressStore.selectedAddress; // Unused
 
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: theme.scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
         centerTitle: true,
-        title: const Text("Account", style: TextStyle(color: Colors.black)),
-        backgroundColor: Colors.white,
-        iconTheme: const IconThemeData(color: Colors.black),
+        title: Text(
+          "Account",
+          style: TextStyle(color: theme.appBarTheme.foregroundColor),
+        ),
+        backgroundColor: theme.appBarTheme.backgroundColor,
+        iconTheme: theme.appBarTheme.iconTheme,
       ),
       body: SafeArea(
         child: _isLoading
@@ -251,10 +254,10 @@ class _AccountPageState extends State<AccountPage> {
                   Container(
                     padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: theme.cardColor,
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withValues(alpha: 0.03),
+                          color: theme.shadowColor.withValues(alpha: 0.03),
                           blurRadius: 12,
                           offset: const Offset(0, 4),
                         ),
@@ -291,8 +294,8 @@ class _AccountPageState extends State<AccountPage> {
                               ),
                               Container(
                                 padding: const EdgeInsets.all(3),
-                                decoration: const BoxDecoration(
-                                  color: Colors.white,
+                                decoration: BoxDecoration(
+                                  color: theme.cardColor,
                                   shape: BoxShape.circle,
                                 ),
                                 child: const CircleAvatar(
@@ -322,14 +325,16 @@ class _AccountPageState extends State<AccountPage> {
                               const SizedBox(height: 4),
                               Text(
                                 _email,
-                                style: TextStyle(color: Colors.grey[700]),
+                                style: TextStyle(
+                                  color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+                                ),
                               ),
                               if (_phone.isNotEmpty) ...[
                                 const SizedBox(height: 2),
                                 Text(
                                   _phone,
                                   style: TextStyle(
-                                    color: Colors.grey[600],
+                                    color: theme.textTheme.bodySmall?.color?.withOpacity(0.6),
                                     fontSize: 12,
                                   ),
                                 ),

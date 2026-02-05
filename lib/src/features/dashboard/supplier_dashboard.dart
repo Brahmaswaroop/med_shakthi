@@ -29,10 +29,10 @@ class _SupplierDashboardState extends State<SupplierDashboard> {
     const SupplierProfileScreen(),
   ];
 
-  @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FA),
+      backgroundColor: theme.scaffoldBackgroundColor,
       //  FAB ADDED - Shows on ALL tabs!
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -90,7 +90,7 @@ class SupplierDashboardHome extends StatelessWidget {
           const SizedBox(height: 20),
           _buildTopBar(context),
           const SizedBox(height: 20),
-          _buildPromoBanner(),
+          _buildPromoBanner(context),
           const SizedBox(height: 30),
           _buildSectionHeader("Categories"),
           const SizedBox(height: 15),
@@ -98,7 +98,7 @@ class SupplierDashboardHome extends StatelessWidget {
           const SizedBox(height: 30),
           _buildSectionHeader("Performance Stats"),
           const SizedBox(height: 15),
-          _buildPerformanceGrid(),
+          _buildPerformanceGrid(context),
           const SizedBox(height: 100), // ✅ CHANGED: Space for FAB
         ],
       ),
@@ -111,10 +111,13 @@ class SupplierDashboardHome extends StatelessWidget {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(15),
           ),
-          child: const Icon(Icons.grid_view_rounded, color: Colors.black54),
+          child: Icon(
+            Icons.grid_view_rounded,
+            color: Theme.of(context).iconTheme.color,
+          ),
         ),
         const SizedBox(width: 15),
 
@@ -122,7 +125,7 @@ class SupplierDashboardHome extends StatelessWidget {
           child: Container(
             height: 50,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(25),
             ),
             child: const TextField(
@@ -147,10 +150,13 @@ class SupplierDashboardHome extends StatelessWidget {
             );
           },
           child: Stack(
-            children: const [
+            children: [
               CircleAvatar(
-                backgroundColor: Colors.white,
-                child: Icon(Icons.shopping_cart_outlined, color: Colors.black),
+                backgroundColor: Theme.of(context).cardColor,
+                child: Icon(
+                  Icons.shopping_cart_outlined,
+                  color: Theme.of(context).iconTheme.color,
+                ),
               ),
               Positioned(
                 right: 0,
@@ -170,7 +176,7 @@ class SupplierDashboardHome extends StatelessWidget {
     );
   }
 
-  Widget _buildPromoBanner() {
+  Widget _buildPromoBanner(BuildContext context) {
     return Container(
       width: double.infinity,
       padding: const EdgeInsets.all(24),
@@ -284,8 +290,8 @@ class SupplierDashboardHome extends StatelessWidget {
               children: [
                 Container(
                   padding: const EdgeInsets.all(18),
-                  decoration: const BoxDecoration(
-                    color: Colors.white,
+                  decoration: BoxDecoration(
+                    color: Theme.of(context).cardColor,
                     shape: BoxShape.circle,
                   ),
                   child: Icon(
@@ -310,7 +316,7 @@ class SupplierDashboardHome extends StatelessWidget {
     );
   }
 
-  Widget _buildPerformanceGrid() {
+  Widget _buildPerformanceGrid(BuildContext context) {
     return GridView.count(
       shrinkWrap: true,
       physics: const NeverScrollableScrollPhysics(),
@@ -319,17 +325,17 @@ class SupplierDashboardHome extends StatelessWidget {
       mainAxisSpacing: 15,
       childAspectRatio: 0.80,
       children: [
-        _statItem("Revenue", "₹ 4.5L", "Supplements", "+12%"),
-        _statItem("Pending", "14 Units", "Medicine", "Alert"),
+        _statItem(context, "Revenue", "₹ 4.5L", "Supplements", "+12%"),
+        _statItem(context, "Pending", "14 Units", "Medicine", "Alert"),
       ],
     );
   }
 
-  Widget _statItem(String title, String value, String sub, String badge) {
+  Widget _statItem(BuildContext context, String title, String value, String sub, String badge) {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(20),
       ),
       child: Column(

@@ -27,7 +27,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(14),
         border: Border.all(
           color: selectedMethod == title ? Colors.teal : Colors.transparent,
@@ -164,15 +164,15 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
     final total = subTotal + shipping;
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7F9),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         centerTitle: true,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
+        iconTheme: IconThemeData(color: Theme.of(context).appBarTheme.foregroundColor),
+        title: Text(
           "Payment Method",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
         ),
       ),
       body: SafeArea(
@@ -212,7 +212,7 @@ class _PaymentMethodScreenState extends State<PaymentMethodScreen> {
                       decoration: InputDecoration(
                         hintText: "Enter your code here",
                         filled: true,
-                        fillColor: Colors.white,
+                        fillColor: Theme.of(context).cardColor,
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
                           borderSide: BorderSide.none,

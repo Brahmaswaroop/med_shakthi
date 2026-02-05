@@ -62,15 +62,15 @@ class _SupplierInventoryScreenState extends State<SupplierInventoryScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF7F8FA),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'My Inventory',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Theme.of(context).appBarTheme.foregroundColor),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -116,7 +116,7 @@ class _SupplierInventoryScreenState extends State<SupplierInventoryScreen> {
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
@@ -158,7 +158,7 @@ class _SupplierInventoryScreenState extends State<SupplierInventoryScreen> {
                 const SizedBox(height: 4),
                 Text(
                   'SKU: ${product.id.substring(0, 4)}... • ₹${product.price}',
-                  style: TextStyle(color: Colors.grey[600], fontSize: 13),
+                  style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6), fontSize: 13),
                 ),
               ],
             ),

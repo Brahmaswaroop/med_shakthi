@@ -11,16 +11,16 @@ class CategoryPageNew extends StatelessWidget {
     Theme.of(context);
 
     return Scaffold(
-      backgroundColor: const Color(0xfff7f9fc), // Modern light blue-grey
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: const Text(
+        title: Text(
           'Shop by Category',
           style: TextStyle(
-            color: Colors.black87,
+            color: Theme.of(context).appBarTheme.foregroundColor,
             fontWeight: FontWeight.bold,
             fontSize: 20,
           ),
@@ -136,7 +136,7 @@ class _SearchAndFilterBar extends StatelessWidget {
           child: Container(
             height: 48,
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               borderRadius: BorderRadius.circular(16),
               boxShadow: [
                 BoxShadow(
@@ -146,11 +146,18 @@ class _SearchAndFilterBar extends StatelessWidget {
                 ),
               ],
             ),
-            child: const TextField(
+            child: TextField(
               decoration: InputDecoration(
                 hintText: 'Search medicines, categories…',
-                hintStyle: TextStyle(fontSize: 14, color: Colors.grey),
-                prefixIcon: Icon(Icons.search, size: 22, color: Colors.grey),
+                hintStyle: TextStyle(
+                  fontSize: 14, 
+                  color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5),
+                ),
+                prefixIcon: Icon(
+                  Icons.search, 
+                  size: 22, 
+                  color: Theme.of(context).iconTheme.color?.withOpacity(0.6),
+                ),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(
                   horizontal: 16,
@@ -213,10 +220,10 @@ class _CategoryGroupTitle extends StatelessWidget {
   Widget build(BuildContext context) {
     return Text(
       title,
-      style: const TextStyle(
+      style: TextStyle(
         fontSize: 18,
         fontWeight: FontWeight.bold,
-        color: Colors.black87,
+        color: Theme.of(context).textTheme.titleLarge?.color,
         letterSpacing: 0.5,
       ),
     );
@@ -359,7 +366,7 @@ class CategoryCard extends StatelessWidget {
         },
         child: Container(
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             borderRadius: BorderRadius.circular(20),
             boxShadow: [
               BoxShadow(
@@ -390,17 +397,20 @@ class CategoryCard extends StatelessWidget {
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 13,
                     fontWeight: FontWeight.bold,
-                    color: Colors.black87,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
               ),
               const SizedBox(height: 4),
               Text(
                 item.skuCountText,
-                style: const TextStyle(fontSize: 11, color: Colors.grey),
+                style: TextStyle(
+                  fontSize: 11, 
+                  color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
+                ),
               ),
             ],
           ),

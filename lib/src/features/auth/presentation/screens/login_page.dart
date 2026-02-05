@@ -102,11 +102,13 @@ class _LoginPageState extends State<LoginPage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFEAF4F2), Color(0xFFF6FBFA)],
+            colors: Theme.of(context).brightness == Brightness.dark
+                ? [const Color(0xFF1A1A1A), const Color(0xFF121212)]
+                : [const Color(0xFFEAF4F2), const Color(0xFFF6FBFA)],
           ),
         ),
         child: SafeArea(
@@ -118,12 +120,13 @@ class _LoginPageState extends State<LoginPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   const SizedBox(height: 24),
-                  const Center(
+                  Center(
                     child: Text(
                       'Login',
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w600,
+                        color: Theme.of(context).textTheme.titleLarge?.color,
                       ),
                     ),
                   ),
@@ -133,7 +136,7 @@ class _LoginPageState extends State<LoginPage> {
                       height: 90,
                       width: 90,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(22),
                         boxShadow: [
                           BoxShadow(
@@ -233,10 +236,10 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  const Center(
+                  Center(
                     child: Text(
                       'Social Login',
-                      style: TextStyle(color: Colors.grey),
+                      style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7)),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -268,7 +271,10 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 14,
                           ),
                           children: [
-                            const TextSpan(text: "Don't have an account? "),
+                            TextSpan(
+                              text: "Don't have an account? ",
+                              style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7)),
+                            ),
                             TextSpan(
                               text: 'Sign up',
                               style: TextStyle(
@@ -327,7 +333,13 @@ class _LoginPageState extends State<LoginPage> {
   Widget _label(String text) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
-      child: Text(text, style: const TextStyle(fontWeight: FontWeight.w500)),
+      child: Text(
+        text, 
+        style: TextStyle(
+          fontWeight: FontWeight.w500,
+          color: Theme.of(context).textTheme.bodyLarge?.color,
+        ),
+      ),
     );
   }
 
@@ -348,7 +360,7 @@ class _LoginPageState extends State<LoginPage> {
         hintText: hint,
         suffixIcon: suffixIcon,
         filled: true,
-        fillColor: Colors.white,
+        fillColor: Theme.of(context).cardColor,
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(30),
           borderSide: BorderSide.none,
@@ -363,7 +375,7 @@ class _LoginPageState extends State<LoginPage> {
       height: 50,
       decoration: BoxDecoration(
         shape: BoxShape.circle,
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         boxShadow: [
           BoxShadow(color: Colors.black.withValues(alpha: 0.1), blurRadius: 8),
         ],

@@ -231,11 +231,13 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       body: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFEAF4F2), Color(0xFFF6FBFA)],
+            colors: Theme.of(context).brightness == Brightness.dark
+                ? [const Color(0xFF1A1A1A), const Color(0xFF121212)]
+                : [const Color(0xFFEAF4F2), const Color(0xFFF6FBFA)],
           ),
         ),
         child: SafeArea(
@@ -259,17 +261,21 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
                           ),
                         ),
                         const SizedBox(height: 10),
-                        const Text(
+                        Text(
                           'Supplier Registration',
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                             letterSpacing: -0.5,
+                            color: Theme.of(context).textTheme.titleLarge?.color,
                           ),
                         ),
-                        const Text(
+                        Text(
                           'Join our network and grow your business',
-                          style: TextStyle(color: Colors.grey, fontSize: 16),
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                            fontSize: 16,
+                          ),
                         ),
                         const SizedBox(height: 30),
 
@@ -330,7 +336,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
                               labelText: 'State',
                               prefixIcon: const Icon(Icons.map, size: 20),
                               filled: true,
-                              fillColor: Colors.white,
+                              fillColor: Theme.of(context).cardColor,
                               border: OutlineInputBorder(
                                 borderRadius: BorderRadius.circular(30),
                                 borderSide: BorderSide.none,
@@ -472,7 +478,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
                               style: ElevatedButton.styleFrom(
                                 backgroundColor: _isFormValid
                                     ? const Color(0xFF6AA39B)
-                                    : Colors.grey.shade300,
+                                    : Theme.of(context).disabledColor,
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
@@ -548,7 +554,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
           prefixText: prefixText,
           counterText: '',
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).cardColor,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,
@@ -579,7 +585,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
           labelText: 'Company Type',
           prefixIcon: const Icon(Icons.category, size: 20),
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).cardColor,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,
@@ -608,7 +614,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
         padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
         margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(30),
         ),
         child: Row(
@@ -621,8 +627,8 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
                   : 'Expiry: ${DateFormat('dd MMM yyyy').format(_selectedExpiryDate!)}',
               style: TextStyle(
                 color: _selectedExpiryDate == null
-                    ? Colors.grey[700]
-                    : Colors.black,
+                    ? Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6)
+                    : Theme.of(context).textTheme.bodyLarge?.color,
                 fontSize: 16,
               ),
             ),
@@ -662,9 +668,12 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
                 fontWeight: FontWeight.w500,
               ),
             ),
-            const Text(
+            Text(
               '(PDF, JPG, PNG up to 5MB)',
-              style: TextStyle(color: Colors.grey, fontSize: 12),
+              style: TextStyle(
+                color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5),
+                fontSize: 12,
+              ),
             ),
           ],
         ),

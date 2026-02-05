@@ -52,11 +52,13 @@ class _SignupPageState extends State<SignupPage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFEAF4F2), Color(0xFFF6FBFA)],
+            colors: Theme.of(context).brightness == Brightness.dark
+                ? [const Color(0xFF1A1A1A), const Color(0xFF121212)]
+                : [const Color(0xFFEAF4F2), const Color(0xFFF6FBFA)],
           ),
         ),
         child: SafeArea(
@@ -76,12 +78,13 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Center(
+                  Center(
                     child: Text(
                       'Create Account',
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w600,
+                        color: Theme.of(context).textTheme.titleLarge?.color,
                       ),
                     ),
                   ),
@@ -93,7 +96,7 @@ class _SignupPageState extends State<SignupPage> {
                       height: 90,
                       width: 90,
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(22),
                         boxShadow: [
                           BoxShadow(
@@ -203,10 +206,13 @@ class _SignupPageState extends State<SignupPage> {
                           });
                         },
                       ),
-                      const Expanded(
+                       Expanded(
                         child: Text(
                           'I agree to the Terms and Conditions & Privacy Policy',
-                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 13, 
+                            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
+                          ),
                         ),
                       ),
                     ],
@@ -428,7 +434,7 @@ class _SignupPageState extends State<SignupPage> {
           suffixIcon: suffixIcon,
           counterText: '', // Hide default counter
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).cardColor,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,

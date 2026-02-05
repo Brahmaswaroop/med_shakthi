@@ -164,15 +164,15 @@ class _AddProductPageState extends State<AddProductPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF2F6F5),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: const Text(
+        title: Text(
           'Add New Product',
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
         ),
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Theme.of(context).appBarTheme.foregroundColor),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
@@ -211,7 +211,7 @@ class _AddProductPageState extends State<AddProductPage> {
       child: TextFormField(
         controller: supplierIdController,
         readOnly: true,
-        style: const TextStyle(color: Colors.grey),
+        style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5)),
         decoration: _inputDecoration("Supplier ID"),
       ),
     );
@@ -294,9 +294,9 @@ class _AddProductPageState extends State<AddProductPage> {
         height: 140,
         margin: const EdgeInsets.only(bottom: 16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
-          border: Border.all(color: Colors.grey.shade300),
+          border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
         ),
         child: imageFile == null
             ? const Column(
@@ -318,11 +318,11 @@ class _AddProductPageState extends State<AddProductPage> {
     );
   }
 
-  InputDecoration _inputDecoration(String label) {
     return InputDecoration(
       labelText: label,
+      labelStyle: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7)),
       filled: true,
-      fillColor: Colors.white,
+      fillColor: Theme.of(context).cardColor,
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(16),
         borderSide: BorderSide.none,

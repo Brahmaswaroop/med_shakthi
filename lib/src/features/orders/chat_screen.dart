@@ -378,12 +378,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 1,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).appBarTheme.foregroundColor),
           onPressed: () => Navigator.pop(context),
         ),
         title: Row(
@@ -417,8 +417,8 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                 children: [
                   Text(
                     widget.supplier.name,
-                    style: const TextStyle(
-                      color: Colors.black,
+                    style: TextStyle(
+                      color: Theme.of(context).appBarTheme.foregroundColor,
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -534,12 +534,12 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                           ),
                         ),
                         const SizedBox(height: 16),
-                        const Text(
+                        Text(
                           'No messages yet',
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.w600,
-                            color: Colors.black87,
+                            color: Theme.of(context).textTheme.bodyLarge?.color,
                           ),
                         ),
                         const SizedBox(height: 8),
@@ -593,7 +593,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                                 decoration: BoxDecoration(
                                   color: isUser
                                       ? const Color(0xFF4C8077)
-                                      : Colors.grey[200],
+                                      : Theme.of(context).cardColor,
                                   borderRadius: BorderRadius.circular(12),
                                 ),
                                 child: message.messageType == 'text'
@@ -602,7 +602,7 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                                         style: TextStyle(
                                           color: isUser
                                               ? Colors.white
-                                              : Colors.black87,
+                                              : Theme.of(context).textTheme.bodyLarge?.color,
                                           fontSize: 14,
                                           fontWeight: FontWeight.w400,
                                         ),
@@ -634,9 +634,9 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
           // Input field
           Container(
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               border: Border(
-                top: BorderSide(color: Colors.grey[300]!, width: 1),
+                top: BorderSide(color: Theme.of(context).dividerColor, width: 1),
               ),
             ),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
@@ -664,7 +664,9 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
                 Expanded(
                   child: Container(
                     decoration: BoxDecoration(
-                      color: Colors.grey[100],
+                      color: Theme.of(context).brightness == Brightness.dark 
+                          ? Colors.grey[900] 
+                          : Colors.grey[100],
                       borderRadius: BorderRadius.circular(24),
                     ),
                     child: TextField(
@@ -729,20 +731,24 @@ class _ChatScreenState extends State<ChatScreen> with TickerProviderStateMixin {
             borderRadius: BorderRadius.circular(8),
           ),
           child: Icon(
-            fileTypeIcon,
-            color: isUser ? Colors.white : Colors.black,
-            size: 28,
-          ),
+          fileTypeIcon,
+          color: isUser 
+              ? Colors.white 
+              : Theme.of(context).textTheme.bodyLarge?.color,
+          size: 28,
         ),
-        const SizedBox(height: 6),
-        Text(
-          message.message,
-          style: TextStyle(
-            color: isUser ? Colors.white : Colors.black87,
-            fontSize: 12,
-            fontWeight: FontWeight.w600,
-          ),
+      ),
+      const SizedBox(height: 6),
+      Text(
+        message.message,
+        style: TextStyle(
+          color: isUser 
+              ? Colors.white 
+              : Theme.of(context).textTheme.bodyLarge?.color,
+          fontSize: 12,
+          fontWeight: FontWeight.w600,
         ),
+      ),
       ],
     );
   }
