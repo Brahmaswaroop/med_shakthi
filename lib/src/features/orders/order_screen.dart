@@ -45,15 +45,15 @@ class OrderDetailScreen extends StatelessWidget {
     final statusColor = _getStatusColor(order.status);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7F9),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         centerTitle: true,
-        iconTheme: const IconThemeData(color: Colors.black),
-        title: const Text(
+        iconTheme: Theme.of(context).appBarTheme.iconTheme,
+        title: Text(
           "Order Details",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
         ),
       ),
       body: SingleChildScrollView(
@@ -64,7 +64,7 @@ class OrderDetailScreen extends StatelessWidget {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(14),
                 boxShadow: [
                   BoxShadow(
@@ -135,7 +135,7 @@ class OrderDetailScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Row(
@@ -173,7 +173,7 @@ class OrderDetailScreen extends StatelessWidget {
               width: double.infinity,
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(14),
               ),
               child: Column(
@@ -185,20 +185,22 @@ class OrderDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
 
-                  _infoRow("Price", "₹${order.price.toStringAsFixed(2)}"),
-                  _infoRow("Quantity", "${order.quantity}"),
+                  _infoRow(context, "Price", "₹${order.price.toStringAsFixed(2)}"),
+                  _infoRow(context, "Quantity", "${order.quantity}"),
                   const Divider(height: 24),
 
                   _infoRow(
+                    context,
                     "Total",
                     "₹${(order.price * order.quantity).toStringAsFixed(2)}",
                     isBold: true,
                   ),
 
                   const SizedBox(height: 10),
-                  _infoRow("Payment Status", order.paymentMode),
+                  _infoRow(context, "Payment Status", order.paymentMode),
                   const SizedBox(height: 6),
                   _infoRow(
+                    context,
                     "Order Date",
                     order.orderDate.isEmpty
                         ? "N/A"
@@ -213,7 +215,7 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _infoRow(String title, String value, {bool isBold = false}) {
+  Widget _infoRow(BuildContext context, String title, String value, {bool isBold = false}) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -221,7 +223,7 @@ class OrderDetailScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 13, color: Colors.grey.shade700),
+            style: TextStyle(fontSize: 13, color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7)),
           ),
           Text(
             value,

@@ -59,7 +59,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: ScaleTransition(
         scale: _screenScale,
         child: SafeArea(
@@ -91,13 +91,13 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
                         ),
                       ),
                       const SizedBox(height: 24),
-                      const Text(
+                      Text(
                         "Order Placed Successfully!",
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
-                          color: Colors.black87,
+                          color: Theme.of(context).textTheme.titleLarge?.color,
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -106,7 +106,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 14,
-                          color: Colors.grey[600],
+                          color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
                           height: 1.5,
                         ),
                       ),
@@ -116,9 +116,9 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
                       Container(
                         padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
-                          color: Colors.grey[50],
+                          color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Colors.grey.shade200),
+                          border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +128,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Colors.grey[800],
+                                color: Theme.of(context).textTheme.titleMedium?.color,
                               ),
                             ),
                             const Divider(height: 30),
@@ -235,9 +235,9 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Colors.grey.shade100),
+        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
       ),
       child: Column(
         children: [
@@ -263,16 +263,16 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
                   children: [
                     Text(
                       title,
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                     ),
                     const SizedBox(height: 4),
                     Text(
                       details,
-                      style: TextStyle(fontSize: 12, color: Colors.grey[600]),
+                      style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6)),
                     ),
                   ],
                 ),
@@ -369,7 +369,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
           style: TextStyle(
             fontSize: fontSize,
             fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
-            color: Colors.grey[700],
+            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
           ),
         ),
         Text(
@@ -379,7 +379,7 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
             fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
             color: isDiscount
                 ? Colors.green
-                : (isBold ? Colors.black : Colors.black87),
+                : (isBold ? Theme.of(context).textTheme.bodyLarge?.color : Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.9)),
           ),
         ),
       ],

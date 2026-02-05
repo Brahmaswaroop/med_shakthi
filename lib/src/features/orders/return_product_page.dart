@@ -91,15 +91,15 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
     const themeColor = Color(0xFF00B894);
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7F9),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
-        title: const Text(
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        title: Text(
           "Return Product",
-          style: TextStyle(color: Colors.black),
+          style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: IconThemeData(color: Theme.of(context).appBarTheme.foregroundColor),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(18),
@@ -109,11 +109,11 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
             Container(
               padding: const EdgeInsets.all(14),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: Theme.of(context).cardColor,
                 borderRadius: BorderRadius.circular(18),
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.black.withValues(alpha: 0.04),
+                    color: Theme.of(context).shadowColor.withValues(alpha: 0.04),
                     blurRadius: 10,
                     offset: const Offset(0, 5),
                   ),
@@ -131,7 +131,7 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
                       errorBuilder: (_, _, _) => Container(
                         width: 80,
                         height: 90,
-                        color: Colors.grey.shade200,
+                        color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.grey[100],
                         child: const Icon(Icons.image_not_supported),
                       ),
                     ),
@@ -163,7 +163,7 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
                           "Order ID: ${widget.orderId}",
                           style: TextStyle(
                             fontSize: 12,
-                            color: Colors.grey.shade600,
+                            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
                           ),
                         ),
                       ],
@@ -199,9 +199,9 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
                         height: 120,
                         width: double.infinity,
                         decoration: BoxDecoration(
-                          color: const Color(0xFFF2F3F7),
+                          color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : const Color(0xFFF2F3F7),
                           borderRadius: BorderRadius.circular(14),
-                          border: Border.all(color: Colors.grey.shade300),
+                          border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
                         ),
                         child: Column(
                           mainAxisAlignment: MainAxisAlignment.center,
@@ -315,8 +315,9 @@ class _ReturnProductPageState extends State<ReturnProductPage> {
                     maxLines: 4,
                     decoration: InputDecoration(
                       hintText: "Write something about your return request...",
+                      hintStyle: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6)),
                       filled: true,
-                      fillColor: const Color(0xFFF2F3F7),
+                      fillColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : const Color(0xFFF2F3F7),
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(14),
                         borderSide: BorderSide.none,

@@ -7,7 +7,7 @@ class OrderSuccessScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: SafeArea(
         child: Center(
           child: Padding(
@@ -21,14 +21,18 @@ class OrderSuccessScreen extends StatelessWidget {
                   child: Icon(Icons.check, size: 45, color: Colors.white),
                 ),
                 const SizedBox(height: 16),
-                const Text(
+                Text(
                   "Order Placed Successfully 🎉",
-                  style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                    fontSize: 18, 
+                    fontWeight: FontWeight.bold,
+                    color: Theme.of(context).textTheme.titleLarge?.color,
+                  ),
                 ),
                 const SizedBox(height: 6),
-                const Text(
+                Text(
                   "Your order has been saved.",
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6)),
                 ),
                 const SizedBox(height: 30),
 

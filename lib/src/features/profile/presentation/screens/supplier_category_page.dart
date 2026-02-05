@@ -74,13 +74,13 @@ class _SupplierCategoryPageState extends State<SupplierCategoryPage> {
     final selectedCategory = categories[selectedCategoryIndex];
 
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7F9),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         elevation: 0,
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: const Text("Categories", style: TextStyle(color: Colors.black)),
+        title: Text("Categories", style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor)),
       ),
       body: Column(
         children: [
@@ -91,7 +91,7 @@ class _SupplierCategoryPageState extends State<SupplierCategoryPage> {
                 hintText: "Search categories...",
                 prefixIcon: const Icon(Icons.search),
                 filled: true,
-                fillColor: Colors.white,
+                fillColor: Theme.of(context).cardColor,
                 contentPadding: const EdgeInsets.symmetric(vertical: 12),
                 border: OutlineInputBorder(
                   borderRadius: BorderRadius.circular(14),
@@ -114,7 +114,7 @@ class _SupplierCategoryPageState extends State<SupplierCategoryPage> {
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 300),
                     width: sidebarVisible ? 110.0 : 0.0,
-                    color: Colors.white,
+                    color: Theme.of(context).cardColor,
                     child: sidebarVisible
                         ? ListView.builder(
                             itemCount: categories.length,
@@ -137,7 +137,7 @@ class _SupplierCategoryPageState extends State<SupplierCategoryPage> {
                                   decoration: BoxDecoration(
                                     color: isSelected
                                         ? themeColor.withValues(alpha: 0.12)
-                                        : Colors.white,
+                                        : Theme.of(context).cardColor,
                                     border: Border(
                                       left: BorderSide(
                                         color: isSelected
@@ -261,7 +261,7 @@ class _SupplierCategoryPageState extends State<SupplierCategoryPage> {
     return Container(
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(

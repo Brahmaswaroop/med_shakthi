@@ -34,10 +34,10 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFEFEFEF),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
-        foregroundColor: Colors.black,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+        foregroundColor: Theme.of(context).appBarTheme.foregroundColor,
         elevation: 0,
         title: Row(
           children: [
@@ -71,13 +71,15 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     decoration: BoxDecoration(
                       color: isMe
                           ? const Color(0xFF4CA6A8)
-                          : Colors.white,
+                          : Theme.of(context).cardColor,
                       borderRadius: BorderRadius.circular(14),
                     ),
                     child: Text(
                       msg['text'],
                       style: TextStyle(
-                        color: isMe ? Colors.white : Colors.black87,
+                        color: isMe 
+                            ? Colors.white 
+                            : Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                     ),
                   ),
@@ -89,7 +91,7 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
           // 💬 Message Input
           Container(
             padding: const EdgeInsets.all(8),
-            color: Colors.white,
+            color: Theme.of(context).cardColor,
             child: Row(
               children: [
                 Expanded(
@@ -98,7 +100,9 @@ class _ChatDetailScreenState extends State<ChatDetailScreen> {
                     decoration: InputDecoration(
                       hintText: "Type a message...",
                       filled: true,
-                      fillColor: Colors.grey.shade100,
+                      fillColor: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[900]
+                          : Colors.grey.shade100,
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(25),
                         borderSide: BorderSide.none,

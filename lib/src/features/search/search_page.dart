@@ -154,18 +154,20 @@ class _SearchPageState extends State<SearchPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[50],
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.black87),
+          icon: Icon(Icons.arrow_back, color: Theme.of(context).appBarTheme.foregroundColor),
           onPressed: () => Navigator.pop(context),
         ),
         title: Container(
           height: 45,
           decoration: BoxDecoration(
-            color: Colors.grey[100],
+            color: Theme.of(context).brightness == Brightness.dark 
+                ? Colors.grey[900] 
+                : Colors.grey[100],
             borderRadius: BorderRadius.circular(25),
           ),
           child: TextField(
@@ -174,11 +176,11 @@ class _SearchPageState extends State<SearchPage> {
             onChanged: performSearch,
             decoration: InputDecoration(
               hintText: 'Search medicines & devices...',
-              hintStyle: TextStyle(color: Colors.grey[600], fontSize: 14),
-              prefixIcon: Icon(Icons.search, color: Colors.grey[600]),
+              hintStyle: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6), fontSize: 14),
+              prefixIcon: Icon(Icons.search, color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.6)),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
-                      icon: Icon(Icons.clear, color: Colors.grey[600]),
+                      icon: Icon(Icons.clear, color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.6)),
                       onPressed: () {
                         _searchController.clear();
                         performSearch('');
@@ -207,20 +209,20 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search_off, size: 80, color: Colors.grey[400]),
+            Icon(Icons.search_off, size: 80, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[300]),
             const SizedBox(height: 16),
             Text(
               'No results found for "$searchQuery"',
               style: TextStyle(
                 fontSize: 16,
-                color: Colors.grey[600],
+                color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
                 fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Try different keywords',
-              style: TextStyle(fontSize: 14, color: Colors.grey[500]),
+              style: TextStyle(fontSize: 14, color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5)),
             ),
           ],
         ),
@@ -234,10 +236,10 @@ class _SearchPageState extends State<SearchPage> {
           padding: const EdgeInsets.all(16.0),
           child: Text(
             '${searchResults.length} results found',
-            style: const TextStyle(
+            style: TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
             ),
           ),
         ),
@@ -265,12 +267,12 @@ class _SearchPageState extends State<SearchPage> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Text(
+          Text(
             'Popular Searches',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: Theme.of(context).textTheme.titleLarge?.color,
             ),
           ),
           const SizedBox(height: 16),
@@ -289,12 +291,12 @@ class _SearchPageState extends State<SearchPage> {
             ],
           ),
           const SizedBox(height: 32),
-          const Text(
+          Text(
             'Recent Searches',
             style: TextStyle(
               fontSize: 18,
               fontWeight: FontWeight.bold,
-              color: Colors.black87,
+              color: Theme.of(context).textTheme.titleLarge?.color,
             ),
           ),
           const SizedBox(height: 16),
@@ -314,8 +316,8 @@ class _SearchPageState extends State<SearchPage> {
       },
       child: Chip(
         label: Text(label),
-        backgroundColor: Colors.white,
-        side: BorderSide(color: Colors.grey[300]!),
+        backgroundColor: Theme.of(context).cardColor,
+        side: BorderSide(color: Theme.of(context).dividerColor),
         labelStyle: const TextStyle(fontSize: 13),
       ),
     );
@@ -324,7 +326,7 @@ class _SearchPageState extends State<SearchPage> {
   Widget _buildRecentSearchItem(String text) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: Icon(Icons.history, color: Colors.grey[600]),
+      leading: Icon(Icons.history, color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.6)),
       title: Text(text),
       onTap: () {
         _searchController.text = text;
@@ -361,10 +363,10 @@ class _SearchPageState extends State<SearchPage> {
                     return Container(
                       width: 80,
                       height: 80,
-                      color: Colors.grey[200],
-                      child: const Icon(
+                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.grey[200],
+                      child: Icon(
                         Icons.medical_services,
-                        color: Colors.grey,
+                        color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.4),
                       ),
                     );
                   },
@@ -378,10 +380,10 @@ class _SearchPageState extends State<SearchPage> {
                   children: [
                     Text(
                       medicine['Medicine Name'] ?? 'Unknown',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -511,10 +513,10 @@ class _SearchPageState extends State<SearchPage> {
                     const SizedBox(height: 8),
                     Text(
                       device['Device_Name'] ?? 'Unknown',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 15,
                         fontWeight: FontWeight.w600,
-                        color: Colors.black87,
+                        color: Theme.of(context).textTheme.bodyLarge?.color,
                       ),
                       maxLines: 2,
                       overflow: TextOverflow.ellipsis,
@@ -737,7 +739,9 @@ class _SearchPageState extends State<SearchPage> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: Colors.grey[100],
+            color: Theme.of(context).brightness == Brightness.dark 
+                ? Colors.grey[900] 
+                : Colors.grey[100],
             borderRadius: BorderRadius.circular(8),
           ),
           child: Text(

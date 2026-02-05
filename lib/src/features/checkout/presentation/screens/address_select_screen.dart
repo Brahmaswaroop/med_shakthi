@@ -151,9 +151,9 @@ class _AddressSelectScreenState extends State<AddressSelectScreen> {
           builder: (context, setSheetState) {
             return Container(
               height: MediaQuery.of(context).size.height * 0.9,
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+              decoration: BoxDecoration(
+                color: Theme.of(context).cardColor,
+                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
               ),
               child: Column(
                 children: [
@@ -176,7 +176,7 @@ class _AddressSelectScreenState extends State<AddressSelectScreen> {
                                 color: Colors.grey,
                               ),
                               filled: true,
-                              fillColor: Colors.grey[100],
+                              fillColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.grey[100],
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                               ),
@@ -266,7 +266,7 @@ class _AddressSelectScreenState extends State<AddressSelectScreen> {
                           bottom: 20,
                           child: FloatingActionButton(
                             mini: true,
-                            backgroundColor: Colors.white,
+                            backgroundColor: Theme.of(context).cardColor,
                             onPressed: () {
                               _getCurrentLocation().then(
                                 (_) => setSheetState(() {}),
@@ -286,7 +286,7 @@ class _AddressSelectScreenState extends State<AddressSelectScreen> {
                   Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: Theme.of(context).cardColor,
                       boxShadow: [
                         BoxShadow(
                           color: Colors.black.withValues(alpha: 0.05),
@@ -482,7 +482,7 @@ class _AddressSelectScreenState extends State<AddressSelectScreen> {
                       margin: const EdgeInsets.only(bottom: 12),
                       padding: const EdgeInsets.all(12),
                       decoration: BoxDecoration(
-                        color: Colors.white,
+                        color: Theme.of(context).cardColor,
                         borderRadius: BorderRadius.circular(12),
                         border: Border.all(
                           color: address.isSelected
@@ -518,14 +518,14 @@ class _AddressSelectScreenState extends State<AddressSelectScreen> {
                                     fontSize: 16,
                                     color: address.isSelected
                                         ? Colors.teal
-                                        : Colors.black,
+                                        : Theme.of(context).textTheme.bodyLarge?.color,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   address.fullAddress,
                                   style: TextStyle(
-                                    color: Colors.grey.shade600,
+                                    color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
                                     fontSize: 14,
                                   ),
                                   maxLines: 2,

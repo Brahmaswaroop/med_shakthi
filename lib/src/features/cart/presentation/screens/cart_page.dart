@@ -11,7 +11,7 @@ class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
   final Color themeColor = const Color(0xFF4C8077);
-  final Color backgroundColor = const Color(0xFFF7F9FC);
+  // Remove hardcoded backgroundColor, will use theme instead
 
   @override
   Widget build(BuildContext context) {
@@ -20,7 +20,7 @@ class CartPage extends StatelessWidget {
     final int shipping = cart.items.isNotEmpty ? 10 : 0;
     final double total = cart.subTotal + shipping;
     return Scaffold(
-      backgroundColor: backgroundColor,
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       body: cart.items.isEmpty
           ? _buildEmptyState(context)
           : Column(
@@ -33,30 +33,30 @@ class CartPage extends StatelessWidget {
                       SliverAppBar(
                         floating: true,
                         pinned: true,
-                        backgroundColor: Colors.white,
+                        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
                         elevation: 0,
                         centerTitle: true,
-                        title: const Text(
+                        title: Text(
                           "My Cart",
                           style: TextStyle(
-                            color: Colors.black87,
+                            color: Theme.of(context).appBarTheme.foregroundColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
                         ),
                         leading: IconButton(
-                          icon: const Icon(
+                          icon: Icon(
                             Icons.arrow_back_ios_new,
                             size: 20,
-                            color: Colors.black87,
+                            color: Theme.of(context).iconTheme.color,
                           ),
                           onPressed: () => Navigator.maybePop(context),
                         ),
                         actions: [
                           IconButton(
-                            icon: const Icon(
+                            icon: Icon(
                               Icons.delete_outline,
-                              color: Colors.black87,
+                              color: Theme.of(context).iconTheme.color,
                             ),
                             onPressed: () =>
                                 _showClearCartDialog(context, cart),
@@ -101,7 +101,7 @@ class CartPage extends StatelessWidget {
           Container(
             padding: const EdgeInsets.all(24),
             decoration: BoxDecoration(
-              color: Colors.white,
+              color: Theme.of(context).cardColor,
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
@@ -123,13 +123,13 @@ class CartPage extends StatelessWidget {
             style: TextStyle(
               fontSize: 20,
               fontWeight: FontWeight.bold,
-              color: Colors.grey[800],
+              color: Theme.of(context).textTheme.titleLarge?.color,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             'Looks like you haven\'t added anything yet.',
-            style: TextStyle(color: Colors.grey[500]),
+            style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6)),
           ),
           const SizedBox(height: 32),
           ElevatedButton(
@@ -163,7 +163,7 @@ class CartPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: const BorderRadius.vertical(top: Radius.circular(30)),
         boxShadow: [
           BoxShadow(
@@ -176,9 +176,9 @@ class CartPage extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          _buildSummaryRow("Sub Total", cart.subTotal),
+          _buildSummaryRow(context, "Sub Total", cart.subTotal),
           const SizedBox(height: 12),
-          _buildSummaryRow("Shipping & Tax", shipping),
+          _buildSummaryRow(context, "Shipping & Tax", shipping),
           const Divider(height: 32),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -225,11 +225,11 @@ class CartPage extends StatelessWidget {
     );
   }
 
-  Widget _buildSummaryRow(String label, num value) {
+  Widget _buildSummaryRow(BuildContext context, String label, num value) {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: TextStyle(fontSize: 15, color: Colors.grey[600])),
+        Text(label, style: TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.7))),
         Text(
           "₹${value is int ? value.toString() : value.toStringAsFixed(2)}",
           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
@@ -288,7 +288,7 @@ class CartPage extends StatelessWidget {
             children: [
               Text('You are placing an order for $totalItems item(s).'),
               const SizedBox(height: 16),
-              _buildSummaryRow('Total Payable', total),
+              _buildSummaryRow(context, 'Total Payable', total),
             ],
           ),
           actions: [
@@ -352,7 +352,7 @@ class _CartItemCard extends StatelessWidget {
         margin: const EdgeInsets.only(bottom: 16),
         padding: const EdgeInsets.all(12),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).cardColor,
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
@@ -372,7 +372,9 @@ class _CartItemCard extends StatelessWidget {
                 height: 80,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Colors.grey[50], // Improved background color
+                  color: Theme.of(context).brightness == Brightness.dark 
+                      ? Colors.grey[900] 
+                      : Colors.grey[50], 
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: item.imagePath?.startsWith('http') ?? false
@@ -381,7 +383,7 @@ class _CartItemCard extends StatelessWidget {
                         item.imagePath ?? '',
                         fit: BoxFit.contain,
                         errorBuilder: (c, o, s) =>
-                            Icon(Icons.medication, color: Colors.grey[300]),
+                            Icon(Icons.medication, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[700] : Colors.grey[300]),
                       ),
               ),
             ),
@@ -418,12 +420,14 @@ class _CartItemCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Colors.grey[100],
+                color: Theme.of(context).brightness == Brightness.dark 
+                    ? Colors.grey[900] 
+                    : Colors.grey[100],
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
                 children: [
-                  _buildQtyBtn(Icons.remove, () {
+                  _buildQtyBtn(context, Icons.remove, () {
                     if (item.quantity > 1) {
                       cart.decrement(index);
                     } else {
@@ -439,7 +443,7 @@ class _CartItemCard extends StatelessWidget {
                       ),
                     ),
                   ),
-                  _buildQtyBtn(Icons.add, () => cart.increment(index)),
+                  _buildQtyBtn(context, Icons.add, () => cart.increment(index)),
                 ],
               ),
             ),
@@ -449,7 +453,7 @@ class _CartItemCard extends StatelessWidget {
     );
   }
 
-  Widget _buildQtyBtn(IconData icon, VoidCallback onTap, {Color? color}) {
+  Widget _buildQtyBtn(BuildContext context, IconData icon, VoidCallback onTap, {Color? color}) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(15),
@@ -457,7 +461,9 @@ class _CartItemCard extends StatelessWidget {
         width: 30,
         height: 30,
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: Theme.of(context).brightness == Brightness.dark 
+              ? Colors.grey[800] 
+              : Colors.white,
           shape: BoxShape.circle,
           boxShadow: [
             BoxShadow(
@@ -467,7 +473,7 @@ class _CartItemCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Icon(icon, size: 16, color: color ?? Colors.black54),
+        child: Icon(icon, size: 16, color: color ?? Theme.of(context).iconTheme.color?.withOpacity(0.7)),
       ),
     );
   }

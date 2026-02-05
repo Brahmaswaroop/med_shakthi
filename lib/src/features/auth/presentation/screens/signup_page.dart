@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:med_shakthi/src/features/dashboard/pharmacy_home_screen.dart';
+import 'package:med_shakthi/src/core/widgets/app_logo.dart';
 
 class SignupPage extends StatefulWidget {
   const SignupPage({super.key});
@@ -52,11 +53,13 @@ class _SignupPageState extends State<SignupPage> {
       body: Container(
         width: double.infinity,
         height: double.infinity,
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           gradient: LinearGradient(
             begin: Alignment.topCenter,
             end: Alignment.bottomCenter,
-            colors: [Color(0xFFEAF4F2), Color(0xFFF6FBFA)],
+            colors: Theme.of(context).brightness == Brightness.dark
+                ? [const Color(0xFF1A1A1A), const Color(0xFF121212)]
+                : [const Color(0xFFEAF4F2), const Color(0xFFF6FBFA)],
           ),
         ),
         child: SafeArea(
@@ -76,41 +79,20 @@ class _SignupPageState extends State<SignupPage> {
                     ),
                   ),
                   const SizedBox(height: 10),
-                  const Center(
+                  Center(
                     child: Text(
                       'Create Account',
                       style: TextStyle(
                         fontSize: 26,
                         fontWeight: FontWeight.w600,
+                        color: Theme.of(context).textTheme.titleLarge?.color,
                       ),
                     ),
                   ),
                   const SizedBox(height: 30),
 
-                  /// Logo
-                  Center(
-                    child: Container(
-                      height: 90,
-                      width: 90,
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(22),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.black.withValues(alpha: 0.12),
-                            blurRadius: 12,
-                            offset: const Offset(0, 6),
-                          ),
-                        ],
-                      ),
-                      child: Padding(
-                        padding: const EdgeInsets.all(14),
-                        child: Image.asset(
-                          'assets/images/logo.png',
-                          fit: BoxFit.contain,
-                        ),
-                      ),
-                    ),
+                  const Center(
+                    child: AppLogo(size: 100),
                   ),
 
                   const SizedBox(height: 40),
@@ -203,10 +185,13 @@ class _SignupPageState extends State<SignupPage> {
                           });
                         },
                       ),
-                      const Expanded(
+                       Expanded(
                         child: Text(
                           'I agree to the Terms and Conditions & Privacy Policy',
-                          style: TextStyle(fontSize: 13, color: Colors.grey),
+                          style: TextStyle(
+                            fontSize: 13, 
+                            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
+                          ),
                         ),
                       ),
                     ],
@@ -266,8 +251,8 @@ class _SignupPageState extends State<SignupPage> {
                       onTap: () => Navigator.pop(context),
                       child: RichText(
                         text: TextSpan(
-                          style: const TextStyle(
-                            color: Colors.grey,
+                          style: TextStyle(
+                            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
                             fontSize: 14,
                           ),
                           children: [
@@ -428,7 +413,7 @@ class _SignupPageState extends State<SignupPage> {
           suffixIcon: suffixIcon,
           counterText: '', // Hide default counter
           filled: true,
-          fillColor: Colors.white,
+          fillColor: Theme.of(context).cardColor,
           border: OutlineInputBorder(
             borderRadius: BorderRadius.circular(30),
             borderSide: BorderSide.none,
@@ -438,6 +423,15 @@ class _SignupPageState extends State<SignupPage> {
             borderSide: BorderSide.none,
           ),
           contentPadding: const EdgeInsets.all(16),
+          labelStyle: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+          ),
+          hintStyle: TextStyle(
+            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
+          ),
+        ),
+        style: TextStyle(
+          color: Theme.of(context).textTheme.bodyLarge?.color,
         ),
       ),
     );
