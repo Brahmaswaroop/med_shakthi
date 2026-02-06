@@ -91,9 +91,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   const SizedBox(height: 30),
 
-                  const Center(
-                    child: AppLogo(size: 100),
-                  ),
+                  const Center(child: AppLogo(size: 100)),
 
                   const SizedBox(height: 40),
 
@@ -185,12 +183,13 @@ class _SignupPageState extends State<SignupPage> {
                           });
                         },
                       ),
-                       Expanded(
+                      Expanded(
                         child: Text(
                           'I agree to the Terms and Conditions & Privacy Policy',
                           style: TextStyle(
-                            fontSize: 13, 
-                            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
+                            fontSize: 13,
+                            color: Theme.of(context).textTheme.bodySmall?.color
+                                ?.withValues(alpha: 0.7),
                           ),
                         ),
                       ),
@@ -252,7 +251,8 @@ class _SignupPageState extends State<SignupPage> {
                       child: RichText(
                         text: TextSpan(
                           style: TextStyle(
-                            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
+                            color: Theme.of(context).textTheme.bodySmall?.color
+                                ?.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                           children: [
@@ -424,15 +424,17 @@ class _SignupPageState extends State<SignupPage> {
           ),
           contentPadding: const EdgeInsets.all(16),
           labelStyle: TextStyle(
-            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+            color: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
           ),
           hintStyle: TextStyle(
-            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
+            color: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
           ),
         ),
-        style: TextStyle(
-          color: Theme.of(context).textTheme.bodyLarge?.color,
-        ),
+        style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
       ),
     );
   }

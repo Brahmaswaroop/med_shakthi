@@ -29,11 +29,17 @@ class CartData extends ChangeNotifier {
 
   Future<void> _loadLocalCart() async {
     try {
+      final user = Supabase.instance.client.auth.currentUser;
+      // If no user, fallback to generic 'local_cart' or just empty
+      final String key = user != null ? 'cart_${user.id}' : 'local_cart';
+
       final prefs = await SharedPreferences.getInstance();
-      final String? cartJson = prefs.getString('local_cart');
+      final String? cartJson = prefs.getString(key);
       if (cartJson != null) {
         final List<dynamic> decodedList = jsonDecode(cartJson);
         _items = decodedList.map((e) => CartItem.fromMap(e)).toList();
+      } else {
+        _items = [];
       }
     } catch (e) {
       debugPrint("Error loading local cart: $e");
@@ -42,9 +48,12 @@ class CartData extends ChangeNotifier {
 
   Future<void> _saveLocalCart() async {
     try {
+      final user = Supabase.instance.client.auth.currentUser;
+      final String key = user != null ? 'cart_${user.id}' : 'local_cart';
+
       final prefs = await SharedPreferences.getInstance();
       final String cartJson = jsonEncode(_items.map((e) => e.toMap()).toList());
-      await prefs.setString('local_cart', cartJson);
+      await prefs.setString(key, cartJson);
     } catch (e) {
       debugPrint("Error saving local cart: $e");
     }
@@ -65,19 +74,28 @@ class CartData extends ChangeNotifier {
           .select()
           .eq('user_id', user.id);
 
-      final List<CartItem> remoteItems = remoteData
-          .map((e) => CartItem.fromMap(e))
-          .toList();
+      final List<CartItem> remoteItems = remoteData.map((e) {
+        // Map DB columns to CartItem model
+        // Assuming conversion handles it or we manually map if names differ
+        return CartItem(
+          id: e['id'] ?? e['product_id'],
+          name: e['name'],
+          price: (e['price'] as num).toDouble(),
+          imagePath: e['image'],
+          quantity: e['quantity'] ?? 1,
+        );
+      }).toList();
 
-      // 2. Merge Strategies
-      // If remote has data, valid source of truth for now (or merge)
-      // Let's do a simple merge: add local items to remote if missing, then update local to match remote.
+      // 2. Merge Strategy: Remote wins for simplicity in this internship project
+      // Ideally: timestamp based merge.
+      // Current: If remote exists, use it. If remote empty & local has items, push local.
+
       if (remoteItems.isNotEmpty) {
-        _items = remoteItems; // Server wins
-        _saveLocalCart();
+        _items = remoteItems;
+        _saveLocalCart(); // Update local persistence
         notifyListeners();
       } else if (_items.isNotEmpty) {
-        // If remote empty but local has items -> Push to remote
+        // Push all local items to remote
         for (var item in _items) {
           await _addToRemote(item);
         }
@@ -171,6 +189,20 @@ class CartData extends ChangeNotifier {
           .from('cart_items')
           .delete()
           .eq('user_id', user.id);
+    }
+  }
+
+  // New method for logout
+  Future<void> clearLocalStateOnly() async {
+    _items.clear();
+    notifyListeners();
+    // Do not delete from DB, just clear memory and maybe local storage ref
+    // But local storage is keyed by user ID, so next login won't see it anyway.
+    // We can explicitly remove the file if we want to be clean.
+    final user = Supabase.instance.client.auth.currentUser;
+    if (user != null) {
+      final prefs = await SharedPreferences.getInstance();
+      await prefs.remove('cart_${user.id}');
     }
   }
 }

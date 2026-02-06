@@ -61,7 +61,8 @@ class _SupplierCategoryPageState extends State<SupplierCategoryPage> {
         .from('products')
         .select()
         .eq('category', category)
-        .eq('sub_category', subCategory);
+        .eq('sub_category', subCategory)
+        .limit(50); // Optimization: Limit results to 50 for faster loading
 
     setState(() {
       products = List<Map<String, dynamic>>.from(response);
@@ -80,7 +81,12 @@ class _SupplierCategoryPageState extends State<SupplierCategoryPage> {
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         centerTitle: true,
         automaticallyImplyLeading: false,
-        title: Text("Categories", style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor)),
+        title: Text(
+          "Categories",
+          style: TextStyle(
+            color: Theme.of(context).appBarTheme.foregroundColor,
+          ),
+        ),
       ),
       body: Column(
         children: [
@@ -225,7 +231,7 @@ class _SupplierCategoryPageState extends State<SupplierCategoryPage> {
                                           },
                                           child: _buildTile(
                                             title: itemName,
-                                            icon: Icons.category_outlined,
+                                            icon: _getSubCategoryIcon(itemName),
                                           ),
                                         );
                                       } else {
@@ -288,5 +294,66 @@ class _SupplierCategoryPageState extends State<SupplierCategoryPage> {
         ],
       ),
     );
+  }
+
+  IconData _getSubCategoryIcon(String subCategory) {
+    switch (subCategory) {
+      // Medicines
+      case "Tablets":
+        return Icons.tablet;
+      case "Syrups":
+        return Icons.liquor;
+      case "Capsules":
+        return Icons.medication;
+      case "Injections":
+        return Icons.vaccines;
+      case "Pain Relief":
+        return Icons.healing;
+
+      // Supplements
+      case "Protein":
+        return Icons.fitness_center;
+      case "Vitamins":
+        return Icons.local_pharmacy;
+      case "Omega 3":
+        return Icons.water_drop;
+      case "Weight Gain":
+        return Icons.monitor_weight;
+      case "Immunity":
+        return Icons.shield;
+
+      // Personal Care
+      case "Skin Care":
+        return Icons.face;
+      case "Hair Care":
+        return Icons.content_cut;
+      case "Body Care":
+        return Icons.spa;
+      case "Cosmetics":
+        return Icons.brush;
+
+      // Baby Care
+      case "Diapers":
+        return Icons.child_care;
+      case "Baby Food":
+        return Icons.rice_bowl;
+      case "Baby Lotion":
+        return Icons.clean_hands;
+      case "Baby Soap":
+        return Icons.soap;
+
+      // Devices
+      case "BP Monitor":
+        return Icons.monitor_heart;
+      case "Thermometer":
+        return Icons.thermostat;
+      case "Glucometer":
+        return Icons.bloodtype;
+      case "Nebulizer":
+        return Icons.air;
+
+      default:
+        return Icons.category_outlined;
+    }
   }
 }

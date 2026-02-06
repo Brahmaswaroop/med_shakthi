@@ -4,6 +4,9 @@ import 'package:csv/csv.dart';
 import 'package:med_shakthi/src/features/wishlist/data/wishlist_service.dart';
 import 'package:med_shakthi/src/features/wishlist/data/models/wishlist_item_model.dart';
 import 'package:provider/provider.dart';
+import 'package:med_shakthi/src/core/utils/smart_product_image.dart';
+import 'package:med_shakthi/src/features/products/data/models/product_model.dart';
+import 'package:med_shakthi/src/features/products/presentation/screens/product_page.dart';
 
 class SearchPage extends StatefulWidget {
   const SearchPage({super.key});
@@ -89,7 +92,7 @@ class _SearchPageState extends State<SearchPage> {
         isLoading = false;
       });
     } catch (e) {
-      print('Error loading data: $e');
+      debugPrint('Error loading data: $e');
       setState(() {
         isLoading = false;
       });
@@ -159,14 +162,17 @@ class _SearchPageState extends State<SearchPage> {
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).appBarTheme.foregroundColor),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).appBarTheme.foregroundColor,
+          ),
           onPressed: () => Navigator.pop(context),
         ),
         title: Container(
           height: 45,
           decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark 
-                ? Colors.grey[900] 
+            color: Theme.of(context).brightness == Brightness.dark
+                ? Colors.grey[900]
                 : Colors.grey[100],
             borderRadius: BorderRadius.circular(25),
           ),
@@ -176,11 +182,26 @@ class _SearchPageState extends State<SearchPage> {
             onChanged: performSearch,
             decoration: InputDecoration(
               hintText: 'Search medicines & devices...',
-              hintStyle: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6), fontSize: 14),
-              prefixIcon: Icon(Icons.search, color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.6)),
+              hintStyle: TextStyle(
+                color: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
+                fontSize: 14,
+              ),
+              prefixIcon: Icon(
+                Icons.search,
+                color: Theme.of(
+                  context,
+                ).iconTheme.color?.withValues(alpha: 0.6),
+              ),
               suffixIcon: _searchController.text.isNotEmpty
                   ? IconButton(
-                      icon: Icon(Icons.clear, color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.6)),
+                      icon: Icon(
+                        Icons.clear,
+                        color: Theme.of(
+                          context,
+                        ).iconTheme.color?.withValues(alpha: 0.6),
+                      ),
                       onPressed: () {
                         _searchController.clear();
                         performSearch('');
@@ -209,20 +230,33 @@ class _SearchPageState extends State<SearchPage> {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(Icons.search_off, size: 80, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[300]),
+            Icon(
+              Icons.search_off,
+              size: 80,
+              color: Theme.of(context).brightness == Brightness.dark
+                  ? Colors.grey[800]
+                  : Colors.grey[300],
+            ),
             const SizedBox(height: 16),
             Text(
               'No results found for "$searchQuery"',
               style: TextStyle(
                 fontSize: 16,
-                color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
+                color: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
                 fontWeight: FontWeight.w500,
               ),
             ),
             const SizedBox(height: 8),
             Text(
               'Try different keywords',
-              style: TextStyle(fontSize: 14, color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5)),
+              style: TextStyle(
+                fontSize: 14,
+                color: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
+              ),
             ),
           ],
         ),
@@ -326,7 +360,10 @@ class _SearchPageState extends State<SearchPage> {
   Widget _buildRecentSearchItem(String text) {
     return ListTile(
       contentPadding: EdgeInsets.zero,
-      leading: Icon(Icons.history, color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.6)),
+      leading: Icon(
+        Icons.history,
+        color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.6),
+      ),
       title: Text(text),
       onTap: () {
         _searchController.text = text;
@@ -345,32 +382,33 @@ class _SearchPageState extends State<SearchPage> {
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
-        onTap: () => _showMedicineDetails(medicine),
+        // Navigate to Product Details
+        onTap: () {
+          final product = Product(
+            id: medicine['Medicine Name'] ?? 'unknown_med',
+            name: medicine['Medicine Name'] ?? 'Unknown',
+            price: double.tryParse(medicine['Price']?.toString() ?? '0') ?? 0.0,
+            image: medicine['Image URL'] ?? '',
+            category: 'Medicine',
+            rating: 4.5, // Mock rating for CSV data
+          );
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => ProductPage(product: product)),
+          );
+        },
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
             children: [
               // Image
-              ClipRRect(
-                borderRadius: BorderRadius.circular(8),
-                child: Image.network(
-                  medicine['Image URL'] ?? '',
-                  width: 80,
-                  height: 80,
-                  fit: BoxFit.cover,
-                  errorBuilder: (context, error, stackTrace) {
-                    return Container(
-                      width: 80,
-                      height: 80,
-                      color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.grey[200],
-                      child: Icon(
-                        Icons.medical_services,
-                        color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.4),
-                      ),
-                    );
-                  },
-                ),
+              SmartProductImage(
+                imageUrl: medicine['Image URL'],
+                category: 'Medicine',
+                width: 80,
+                height: 80,
               ),
               const SizedBox(width: 12),
               // Details
@@ -466,25 +504,33 @@ class _SearchPageState extends State<SearchPage> {
       elevation: 1,
       shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
       child: InkWell(
-        onTap: () => _showDeviceDetails(device),
+        // Navigate to Product Details
+        onTap: () {
+          final product = Product(
+            id: device['Device_Name'] ?? 'unknown_device',
+            name: device['Device_Name'] ?? 'Unknown',
+            price: 0.0, // Devices in CSV might not have clear price
+            image: '', // Use fallback
+            category: 'Device',
+            rating: 4.5, // Mock
+          );
+
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (_) => ProductPage(product: product)),
+          );
+        },
         borderRadius: BorderRadius.circular(12),
         child: Padding(
           padding: const EdgeInsets.all(12),
           child: Row(
             children: [
-              // Icon
-              Container(
+              // Icon -> Smart Image
+              SmartProductImage(
+                imageUrl: null, // Devices might not have images in CSV
+                category: 'Device',
                 width: 80,
                 height: 80,
-                decoration: BoxDecoration(
-                  color: const Color(0xFFE3F2FD),
-                  borderRadius: BorderRadius.circular(8),
-                ),
-                child: const Icon(
-                  Icons.medical_services,
-                  size: 40,
-                  color: Color(0xFF2196F3),
-                ),
               ),
               const SizedBox(width: 12),
               // Details
@@ -549,207 +595,6 @@ class _SearchPageState extends State<SearchPage> {
           ),
         ),
       ),
-    );
-  }
-
-  void _showMedicineDetails(Map<String, dynamic> medicine) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.7,
-          minChildSize: 0.5,
-          maxChildSize: 0.95,
-          expand: false,
-          builder: (context, scrollController) {
-            return SingleChildScrollView(
-              controller: scrollController,
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Center(
-                    child: ClipRRect(
-                      borderRadius: BorderRadius.circular(12),
-                      child: Image.network(
-                        medicine['Image URL'] ?? '',
-                        height: 200,
-                        fit: BoxFit.cover,
-                        errorBuilder: (context, error, stackTrace) {
-                          return Container(
-                            height: 200,
-                            color: Colors.grey[300],
-                            child: const Icon(
-                              Icons.medical_services,
-                              size: 80,
-                              color: Colors.grey,
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    medicine['Medicine Name'] ?? 'Unknown',
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    medicine['Manufacturer'] ?? 'Unknown Manufacturer',
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                  ),
-                  const SizedBox(height: 16),
-                  _buildDetailSection(
-                    'Composition',
-                    medicine['Composition'] ?? 'N/A',
-                    Icons.science,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildDetailSection(
-                    'Uses',
-                    medicine['Uses'] ?? 'N/A',
-                    Icons.healing,
-                  ),
-                  const SizedBox(height: 16),
-                  _buildDetailSection(
-                    'Side Effects',
-                    medicine['Side_effects'] ?? 'N/A',
-                    Icons.warning_amber_rounded,
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  void _showDeviceDetails(Map<String, dynamic> device) {
-    showModalBottomSheet(
-      context: context,
-      isScrollControlled: true,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
-      ),
-      builder: (context) {
-        return DraggableScrollableSheet(
-          initialChildSize: 0.6,
-          minChildSize: 0.4,
-          maxChildSize: 0.9,
-          expand: false,
-          builder: (context, scrollController) {
-            return SingleChildScrollView(
-              controller: scrollController,
-              padding: const EdgeInsets.all(20),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Center(
-                    child: Container(
-                      width: 40,
-                      height: 4,
-                      decoration: BoxDecoration(
-                        color: Colors.grey[300],
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
-                  Text(
-                    device['Device_Name'] ?? 'Unknown',
-                    style: const TextStyle(
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    device['Manufacturer'] ?? 'Unknown Manufacturer',
-                    style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                  ),
-                  if (device['Model_Number'] != null)
-                    Padding(
-                      padding: const EdgeInsets.only(top: 4),
-                      child: Text(
-                        'Model: ${device['Model_Number']}',
-                        style: TextStyle(fontSize: 14, color: Colors.grey[600]),
-                      ),
-                    ),
-                  const SizedBox(height: 20),
-                  const Text(
-                    'Device Information',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 12),
-                  Container(
-                    padding: const EdgeInsets.all(16),
-                    decoration: BoxDecoration(
-                      color: Colors.grey[100],
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: const Text(
-                      'This is a medical device. Please consult with healthcare professionals for proper usage and guidance.',
-                      style: TextStyle(fontSize: 14, height: 1.5),
-                    ),
-                  ),
-                ],
-              ),
-            );
-          },
-        );
-      },
-    );
-  }
-
-  Widget _buildDetailSection(String title, String content, IconData icon) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        Row(
-          children: [
-            Icon(icon, size: 20, color: Colors.blue[700]),
-            const SizedBox(width: 8),
-            Text(
-              title,
-              style: const TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ),
-        const SizedBox(height: 8),
-        Container(
-          padding: const EdgeInsets.all(12),
-          decoration: BoxDecoration(
-            color: Theme.of(context).brightness == Brightness.dark 
-                ? Colors.grey[900] 
-                : Colors.grey[100],
-            borderRadius: BorderRadius.circular(8),
-          ),
-          child: Text(
-            content,
-            style: const TextStyle(fontSize: 14, height: 1.5),
-          ),
-        ),
-      ],
     );
   }
 }

@@ -3,6 +3,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:package_info_plus/package_info_plus.dart';
 import 'package:provider/provider.dart';
 import 'package:med_shakthi/src/core/theme/theme_provider.dart';
+import 'package:med_shakthi/src/features/cart/data/cart_data.dart';
+import 'package:med_shakthi/src/features/wishlist/data/wishlist_service.dart';
 import 'privacy_policy_screen.dart';
 
 class SettingsPage extends StatefulWidget {
@@ -21,13 +23,15 @@ class _SettingsPageState extends State<SettingsPage> {
   Widget build(BuildContext context) {
     final themeProvider = Provider.of<ThemeProvider>(context);
     final isDark = themeProvider.isDarkMode;
-    
+
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
         title: Text(
           "Settings",
-          style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
+          style: TextStyle(
+            color: Theme.of(context).appBarTheme.foregroundColor,
+          ),
         ),
         centerTitle: true,
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
@@ -73,17 +77,21 @@ class _SettingsPageState extends State<SettingsPage> {
             icon: Icons.info_outline,
             onTap: _showAboutAppDialog,
           ),
-          // const SizedBox(height: 12),
-          // _tileButton(
-          //   title: "Logout",
-          //   subtitle: "Sign out from your account",
-          //   icon: Icons.logout,
-          //   onTap: () async {
-          //     await supabase.auth.signOut();
-          //     if (!mounted) return;
-          //     Navigator.pop(context);
-          //   },
-          // ),
+          const SizedBox(height: 12),
+          _tileButton(
+            title: "Logout",
+            subtitle: "Sign out from your account",
+            icon: Icons.logout,
+            onTap: () async {
+              // Clear local state
+              context.read<CartData>().clearLocalStateOnly();
+              context.read<WishlistService>().clearWishlist();
+
+              await supabase.auth.signOut();
+              if (!mounted) return;
+              Navigator.pop(context);
+            },
+          ),
         ],
       ),
     );
@@ -172,7 +180,9 @@ class _SettingsPageState extends State<SettingsPage> {
         subtitle: Text(
           subtitle,
           style: TextStyle(
-            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+            color: Theme.of(
+              context,
+            ).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
           ),
         ),
       ),
@@ -213,7 +223,9 @@ class _SettingsPageState extends State<SettingsPage> {
                   Text(
                     subtitle,
                     style: TextStyle(
-                      color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                      color: Theme.of(
+                        context,
+                      ).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
                     ),
                   ),
                 ],
@@ -222,7 +234,9 @@ class _SettingsPageState extends State<SettingsPage> {
             Icon(
               Icons.arrow_forward_ios,
               size: 14,
-              color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.5),
+              color: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.color?.withValues(alpha: 0.5),
             ),
           ],
         ),

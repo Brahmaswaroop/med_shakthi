@@ -150,13 +150,17 @@ class _SearchAndFilterBar extends StatelessWidget {
               decoration: InputDecoration(
                 hintText: 'Search medicines, categories…',
                 hintStyle: TextStyle(
-                  fontSize: 14, 
-                  color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5),
+                  fontSize: 14,
+                  color: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
                 ),
                 prefixIcon: Icon(
-                  Icons.search, 
-                  size: 22, 
-                  color: Theme.of(context).iconTheme.color?.withOpacity(0.6),
+                  Icons.search,
+                  size: 22,
+                  color: Theme.of(
+                    context,
+                  ).iconTheme.color?.withValues(alpha: 0.6),
                 ),
                 border: InputBorder.none,
                 contentPadding: EdgeInsets.symmetric(
@@ -408,8 +412,10 @@ class CategoryCard extends StatelessWidget {
               Text(
                 item.skuCountText,
                 style: TextStyle(
-                  fontSize: 11, 
-                  color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
+                  fontSize: 11,
+                  color: Theme.of(
+                    context,
+                  ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
                 ),
               ),
             ],

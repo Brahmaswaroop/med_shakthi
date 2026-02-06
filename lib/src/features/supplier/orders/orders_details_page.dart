@@ -1,26 +1,44 @@
 import 'package:flutter/material.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
 
 class OrderDetailsPage extends StatelessWidget {
   final String orderId;
 
-  const OrderDetailsPage({
-    super.key,
-    required this.orderId,
-  });
+  const OrderDetailsPage({super.key, required this.orderId});
+
+  Future<void> _updateStatus(BuildContext context, String status) async {
+    try {
+      final supabase = Supabase.instance.client;
+      await supabase
+          .from('orders')
+          .update({'status': status})
+          .eq('id', orderId);
+
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Order updated to $status'),
+          backgroundColor: status == 'cancelled' ? Colors.red : Colors.green,
+        ),
+      );
+      Navigator.pop(context);
+    } catch (e) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Order Details"),
-        centerTitle: true,
-      ),
+      appBar: AppBar(title: const Text("Order Details"), centerTitle: true),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-
             // 📦 Order Summary
             _sectionTitle("Order Summary"),
             _infoRow("Order ID", orderId), // ✅ dynamic
@@ -33,10 +51,7 @@ class OrderDetailsPage extends StatelessWidget {
             _sectionTitle("Pharmacy Details"),
             _infoRow("Pharmacy Name", "ABC Medicals"),
             _infoRow("Contact", "+91 98765 43210"),
-            _infoRow(
-              "Delivery Address",
-              "12, MG Road, Bengaluru, Karnataka",
-            ),
+            _infoRow("Delivery Address", "12, MG Road, Bengaluru, Karnataka"),
             const SizedBox(height: 20),
 
             // 💊 Items Ordered
@@ -70,16 +85,14 @@ class OrderDetailsPage extends StatelessWidget {
               children: [
                 OutlinedButton(
                   onPressed: () {
-                    // TODO: Reject Order
+                    _updateStatus(context, 'cancelled');
                   },
-                  style: OutlinedButton.styleFrom(
-                    foregroundColor: Colors.red,
-                  ),
+                  style: OutlinedButton.styleFrom(foregroundColor: Colors.red),
                   child: const Text("Reject"),
                 ),
                 ElevatedButton(
                   onPressed: () {
-                    // TODO: Accept / Dispatch Order
+                    _updateStatus(context, 'confirmed');
                   },
                   child: const Text("Accept Order"),
                 ),
@@ -98,10 +111,7 @@ class OrderDetailsPage extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: 10),
       child: Text(
         title,
-        style: const TextStyle(
-          fontSize: 18,
-          fontWeight: FontWeight.bold,
-        ),
+        style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
       ),
     );
   }

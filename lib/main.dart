@@ -142,8 +142,10 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 // Providers
 import 'package:med_shakthi/src/features/cart/data/cart_data.dart';
-import 'package:med_shakthi/src/features/checkout/presentation/screens/AddressStore.dart';
+import 'package:med_shakthi/src/features/checkout/presentation/screens/address_store.dart';
 import 'package:med_shakthi/src/features/wishlist/data/wishlist_service.dart';
+import 'package:med_shakthi/src/core/theme/theme_provider.dart';
+import 'package:med_shakthi/src/core/theme/app_theme.dart';
 
 // Auth & Dashboards
 import 'package:med_shakthi/src/features/auth/presentation/screens/login_page.dart';
@@ -152,8 +154,6 @@ import 'package:med_shakthi/src/features/dashboard/supplier_dashboard.dart';
 
 // 🔐 Reset Password Page
 import 'package:med_shakthi/src/features/auth/presentation/screens/reset_password_page.dart';
-
-
 
 /// 🔑 GLOBAL NAVIGATOR KEY (IMPORTANT)
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -174,29 +174,37 @@ Future<void> main() async {
         ChangeNotifierProvider(create: (_) => CartData()),
         ChangeNotifierProvider(create: (_) => AddressStore()),
         ChangeNotifierProvider(create: (_) => WishlistService()),
+        ChangeNotifierProvider(create: (_) => ThemeProvider()),
       ],
       child: const MyApp(),
     ),
   );
 }
+
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      title: 'Med Shakthi',
-      theme: ThemeData(
-        primarySwatch: Colors.teal,
-        useMaterial3: true,
-        scaffoldBackgroundColor: const Color(0xFFF5F7F9),
-      ),
-      home: const RootRouter(), // ✅ CORRECT
+    return Consumer<ThemeProvider>(
+      builder: (context, themeProvider, child) {
+        return MaterialApp(
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          title: 'Med Shakthi',
+          theme: AppTheme.lightTheme,
+          darkTheme: AppTheme.darkTheme,
+          themeMode: themeProvider.isDarkMode
+              ? ThemeMode.dark
+              : ThemeMode.light,
+          home: const RootRouter(),
+        );
+      },
     );
   }
-}class RootRouter extends StatefulWidget {
+}
+
+class RootRouter extends StatefulWidget {
   const RootRouter({super.key});
 
   @override
@@ -226,7 +234,7 @@ class _RootRouterState extends State<RootRouter> {
 
         navigatorKey.currentState?.pushAndRemoveUntil(
           MaterialPageRoute(builder: (_) => const ResetPasswordPage()),
-              (_) => false,
+          (_) => false,
         );
         return;
       }
@@ -253,8 +261,6 @@ class _RootRouterState extends State<RootRouter> {
     return const AuthGate();
   }
 }
-
-
 
 /// 🔐 AUTH GATE (ROLE BASED NAVIGATION)
 class AuthGate extends StatefulWidget {

@@ -134,9 +134,7 @@ class _LoginPageState extends State<LoginPage> {
                     ),
                   ),
                   const SizedBox(height: 30),
-                  const Center(
-                    child: AppLogo(size: 100),
-                  ),
+                  const Center(child: AppLogo(size: 100)),
                   const SizedBox(height: 40),
                   _label('Email'),
                   _textField(
@@ -173,8 +171,6 @@ class _LoginPageState extends State<LoginPage> {
                   Align(
                     alignment: Alignment.centerRight,
                     child: TextButton(
-                      onPressed: () {},
-                      child: Text(
                       onPressed: () {
                         Navigator.push(
                           context,
@@ -183,9 +179,13 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                         );
                       },
-                      child: const Text(
+                      child: Text(
                         'Forgot Password?',
-                        style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6)),
+                        style: TextStyle(
+                          color: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
+                        ),
                       ),
                     ),
                   ),
@@ -224,7 +224,11 @@ class _LoginPageState extends State<LoginPage> {
                   Center(
                     child: Text(
                       'Social Login',
-                      style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7)),
+                      style: TextStyle(
+                        color: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 16),
@@ -233,13 +237,17 @@ class _LoginPageState extends State<LoginPage> {
                     children: [
                       _socialIcon(Icons.facebook, const Color(0xFF1877F2)),
                       const SizedBox(width: 20),
-                      _socialIcon(Icons.g_mobiledata, const Color(0xFFEA4335), size: 40),
+                      _socialIcon(
+                        Icons.g_mobiledata,
+                        const Color(0xFFEA4335),
+                        size: 40,
+                      ),
                       const SizedBox(width: 20),
                       _socialIcon(
-                        Icons.apple, 
-                        Theme.of(context).brightness == Brightness.dark 
-                          ? Colors.white 
-                          : Colors.black,
+                        Icons.apple,
+                        Theme.of(context).brightness == Brightness.dark
+                            ? Colors.white
+                            : Colors.black,
                       ),
                     ],
                   ),
@@ -257,13 +265,20 @@ class _LoginPageState extends State<LoginPage> {
                       child: RichText(
                         text: TextSpan(
                           style: TextStyle(
-                            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
+                            color: Theme.of(context).textTheme.bodySmall?.color
+                                ?.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                           children: [
                             TextSpan(
                               text: "Don't have an account? ",
-                              style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7)),
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.color
+                                    ?.withValues(alpha: 0.7),
+                              ),
                             ),
                             TextSpan(
                               text: 'Sign up',
@@ -292,13 +307,20 @@ class _LoginPageState extends State<LoginPage> {
                       child: RichText(
                         text: TextSpan(
                           style: TextStyle(
-                            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
+                            color: Theme.of(context).textTheme.bodySmall?.color
+                                ?.withValues(alpha: 0.6),
                             fontSize: 14,
                           ),
                           children: [
                             TextSpan(
                               text: 'Are you a distributor? ',
-                              style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7)),
+                              style: TextStyle(
+                                color: Theme.of(context)
+                                    .textTheme
+                                    .bodySmall
+                                    ?.color
+                                    ?.withValues(alpha: 0.7),
+                              ),
                             ),
                             TextSpan(
                               text: 'Register as Supplier',
@@ -327,7 +349,7 @@ class _LoginPageState extends State<LoginPage> {
     return Padding(
       padding: const EdgeInsets.only(bottom: 6),
       child: Text(
-        text, 
+        text,
         style: TextStyle(
           fontWeight: FontWeight.w500,
           color: Theme.of(context).textTheme.bodyLarge?.color,
@@ -351,7 +373,11 @@ class _LoginPageState extends State<LoginPage> {
       validator: validator,
       decoration: InputDecoration(
         hintText: hint,
-        hintStyle: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.4)),
+        hintStyle: TextStyle(
+          color: Theme.of(
+            context,
+          ).textTheme.bodySmall?.color?.withValues(alpha: 0.4),
+        ),
         suffixIcon: suffixIcon,
         filled: true,
         fillColor: Theme.of(context).cardColor,
@@ -372,7 +398,11 @@ class _LoginPageState extends State<LoginPage> {
         color: Theme.of(context).cardColor,
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withValues(alpha: Theme.of(context).brightness == Brightness.dark ? 0.3 : 0.1), 
+            color: Colors.black.withValues(
+              alpha: Theme.of(context).brightness == Brightness.dark
+                  ? 0.3
+                  : 0.1,
+            ),
             blurRadius: 8,
           ),
         ],

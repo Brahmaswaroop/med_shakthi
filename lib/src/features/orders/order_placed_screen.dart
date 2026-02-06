@@ -106,7 +106,9 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
                         textAlign: TextAlign.center,
                         style: TextStyle(
                           fontSize: 14,
-                          color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
+                          color: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
                           height: 1.5,
                         ),
                       ),
@@ -118,7 +120,11 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
                         decoration: BoxDecoration(
                           color: Theme.of(context).cardColor,
                           borderRadius: BorderRadius.circular(20),
-                          border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
+                          border: Border.all(
+                            color: Theme.of(
+                              context,
+                            ).dividerColor.withValues(alpha: 0.1),
+                          ),
                         ),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -128,7 +134,9 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
-                                color: Theme.of(context).textTheme.titleMedium?.color,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.titleMedium?.color,
                               ),
                             ),
                             const Divider(height: 30),
@@ -235,9 +243,13 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
     return Container(
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.white,
+        color: Theme.of(context).brightness == Brightness.dark
+            ? Colors.grey[900]
+            : Colors.white,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: Theme.of(context).dividerColor.withValues(alpha: 0.1),
+        ),
       ),
       child: Column(
         children: [
@@ -272,7 +284,12 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
                     const SizedBox(height: 4),
                     Text(
                       details,
-                      style: TextStyle(fontSize: 12, color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6)),
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: Theme.of(
+                          context,
+                        ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
+                      ),
                     ),
                   ],
                 ),
@@ -369,7 +386,9 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
           style: TextStyle(
             fontSize: fontSize,
             fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
-            color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.7),
+            color: Theme.of(
+              context,
+            ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
           ),
         ),
         Text(
@@ -379,7 +398,11 @@ class _OrderPlacedScreenState extends State<OrderPlacedScreen>
             fontWeight: isBold ? FontWeight.bold : FontWeight.w500,
             color: isDiscount
                 ? Colors.green
-                : (isBold ? Theme.of(context).textTheme.bodyLarge?.color : Theme.of(context).textTheme.bodyLarge?.color?.withOpacity(0.9)),
+                : (isBold
+                      ? Theme.of(context).textTheme.bodyLarge?.color
+                      : Theme.of(
+                          context,
+                        ).textTheme.bodyLarge?.color?.withValues(alpha: 0.9)),
           ),
         ),
       ],

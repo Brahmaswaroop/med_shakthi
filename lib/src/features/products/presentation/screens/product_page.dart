@@ -6,6 +6,7 @@ import '../../../cart/presentation/screens/cart_page.dart';
 import '../../data/models/product_model.dart';
 import 'package:med_shakthi/src/features/wishlist/data/wishlist_service.dart';
 import 'package:med_shakthi/src/features/wishlist/data/models/wishlist_item_model.dart';
+import 'package:med_shakthi/src/core/utils/smart_product_image.dart';
 
 class ProductPage extends StatelessWidget {
   final Product product;
@@ -136,12 +137,11 @@ class _ProductImageCard extends StatelessWidget {
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(24),
       ),
-      child: Image.network(
-        imageUrl,
+      child: SmartProductImage(
+        imageUrl: imageUrl,
         height: 230,
         fit: BoxFit.contain,
-        errorBuilder: (_, _, _) =>
-            const Icon(Icons.image_not_supported, size: 80),
+        borderRadius: 0, // Container already has radius
       ),
     );
   }
@@ -167,8 +167,10 @@ class _ProductInfoSection extends StatelessWidget {
           ),
           const SizedBox(height: 6),
           Text(
-            product.category, 
-            style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color),
+            product.category,
+            style: TextStyle(
+              color: Theme.of(context).textTheme.bodySmall?.color,
+            ),
           ),
           const SizedBox(height: 12),
           Row(
@@ -249,7 +251,7 @@ class _BottomBar extends StatelessWidget {
           width: double.infinity,
           child: ElevatedButton(
             onPressed: () {
-              print("Product ID: ${product.id}");
+              // debugPrint("Product ID: ${product.id}");
 
               context.read<CartData>().addItem(
                 CartItem(

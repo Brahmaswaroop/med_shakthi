@@ -24,7 +24,7 @@ class OrderSuccessScreen extends StatelessWidget {
                 Text(
                   "Order Placed Successfully 🎉",
                   style: TextStyle(
-                    fontSize: 18, 
+                    fontSize: 18,
                     fontWeight: FontWeight.bold,
                     color: Theme.of(context).textTheme.titleLarge?.color,
                   ),
@@ -32,7 +32,11 @@ class OrderSuccessScreen extends StatelessWidget {
                 const SizedBox(height: 6),
                 Text(
                   "Your order has been saved.",
-                  style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6)),
+                  style: TextStyle(
+                    color: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
+                  ),
                 ),
                 const SizedBox(height: 30),
 

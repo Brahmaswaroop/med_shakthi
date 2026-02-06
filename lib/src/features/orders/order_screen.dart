@@ -53,7 +53,9 @@ class OrderDetailScreen extends StatelessWidget {
         iconTheme: Theme.of(context).appBarTheme.iconTheme,
         title: Text(
           "Order Details",
-          style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
+          style: TextStyle(
+            color: Theme.of(context).appBarTheme.foregroundColor,
+          ),
         ),
       ),
       body: SingleChildScrollView(
@@ -185,7 +187,11 @@ class OrderDetailScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 10),
 
-                  _infoRow(context, "Price", "₹${order.price.toStringAsFixed(2)}"),
+                  _infoRow(
+                    context,
+                    "Price",
+                    "₹${order.price.toStringAsFixed(2)}",
+                  ),
                   _infoRow(context, "Quantity", "${order.quantity}"),
                   const Divider(height: 24),
 
@@ -215,7 +221,12 @@ class OrderDetailScreen extends StatelessWidget {
     );
   }
 
-  Widget _infoRow(BuildContext context, String title, String value, {bool isBold = false}) {
+  Widget _infoRow(
+    BuildContext context,
+    String title,
+    String value, {
+    bool isBold = false,
+  }) {
     return Padding(
       padding: const EdgeInsets.only(bottom: 8),
       child: Row(
@@ -223,7 +234,12 @@ class OrderDetailScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: TextStyle(fontSize: 13, color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7)),
+            style: TextStyle(
+              fontSize: 13,
+              color: Theme.of(
+                context,
+              ).textTheme.bodyMedium?.color?.withValues(alpha: 0.7),
+            ),
           ),
           Text(
             value,

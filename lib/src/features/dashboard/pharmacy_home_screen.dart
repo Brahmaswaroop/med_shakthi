@@ -159,17 +159,24 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
               decoration: BoxDecoration(
                 color: theme.cardColor,
                 borderRadius: BorderRadius.circular(30),
-                border: Border.all(color: theme.dividerColor.withValues(alpha: 0.1)),
+                border: Border.all(
+                  color: theme.dividerColor.withValues(alpha: 0.1),
+                ),
               ),
               child: Row(
                 children: [
-                  Icon(Icons.search, color: theme.iconTheme.color?.withValues(alpha: 0.6)),
+                  Icon(
+                    Icons.search,
+                    color: theme.iconTheme.color?.withValues(alpha: 0.6),
+                  ),
                   SizedBox(width: 8),
                   Expanded(
                     child: Text(
                       "Search medicine",
                       style: TextStyle(
-                        color: theme.textTheme.bodySmall?.color?.withOpacity(0.6), 
+                        color: theme.textTheme.bodySmall?.color?.withValues(
+                          alpha: 0.6,
+                        ),
                         fontSize: 14,
                       ),
                     ),
@@ -260,7 +267,7 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
         Text(
           title,
           style: TextStyle(
-            fontSize: 18, 
+            fontSize: 18,
             fontWeight: FontWeight.bold,
             color: Theme.of(context).textTheme.titleLarge?.color,
           ),
@@ -289,19 +296,15 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
         scrollDirection: Axis.horizontal,
         children: [
           // Placeholder for categories, you can map real data here later
-          _buildCategoryItem(Icons.medication, "Medicines", Colors.blue[100]!),
+          _buildCategoryItem(Icons.medication, "Medicines", Colors.blue),
           const SizedBox(width: 20),
-          _buildCategoryItem(
-            Icons.medical_services,
-            "Devices",
-            Colors.purple[100]!,
-          ),
+          _buildCategoryItem(Icons.medical_services, "Devices", Colors.purple),
           const SizedBox(width: 20),
-          _buildCategoryItem(Icons.favorite, "Health", Colors.red[100]!),
+          _buildCategoryItem(Icons.favorite, "Health", Colors.red),
           const SizedBox(width: 20),
-          _buildCategoryItem(Icons.wb_sunny, "Vitamins", Colors.orange[100]!),
+          _buildCategoryItem(Icons.wb_sunny, "Vitamins", Colors.orange),
           const SizedBox(width: 20),
-          _buildCategoryItem(Icons.spa, "Care", Colors.green[100]!),
+          _buildCategoryItem(Icons.spa, "Care", Colors.green),
         ],
       ),
     );
@@ -334,7 +337,9 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
             height: 60,
             width: 60,
             decoration: BoxDecoration(
-              color: theme.cardColor,
+              color: color.withValues(
+                alpha: theme.brightness == Brightness.dark ? 0.2 : 0.1,
+              ),
               shape: BoxShape.circle,
               boxShadow: [
                 BoxShadow(
@@ -344,13 +349,7 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
                 ),
               ],
             ),
-            child: Center(
-              child: Icon(
-                icon, 
-                color: theme.brightness == Brightness.dark ? Colors.white70 : Colors.black54, 
-                size: 28,
-              ),
-            ),
+            child: Center(child: Icon(icon, color: color, size: 28)),
           ),
           const SizedBox(height: 8),
           Text(
@@ -398,7 +397,9 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
                   product.image,
                   fit: BoxFit.contain,
                   errorBuilder: (c, e, s) => Container(
-                    color: theme.brightness == Brightness.dark ? Colors.grey[800] : Colors.grey[100],
+                    color: theme.brightness == Brightness.dark
+                        ? Colors.grey[800]
+                        : Colors.grey[100],
                     child: const Center(child: Icon(Icons.image_not_supported)),
                   ),
                 ),
@@ -410,7 +411,7 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
               maxLines: 2,
               overflow: TextOverflow.ellipsis,
               style: TextStyle(
-                fontWeight: FontWeight.bold, 
+                fontWeight: FontWeight.bold,
                 fontSize: 14,
                 color: theme.textTheme.titleMedium?.color,
               ),
@@ -419,7 +420,7 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
             Text(
               product.category,
               style: TextStyle(
-                color: theme.textTheme.bodySmall?.color?.withOpacity(0.6), 
+                color: theme.textTheme.bodySmall?.color?.withValues(alpha: 0.6),
                 fontSize: 12,
               ),
             ),
@@ -701,7 +702,11 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
                             product.rating.toStringAsFixed(1),
                             style: TextStyle(
                               fontSize: 12,
-                              color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
+                              color: Theme.of(context)
+                                  .textTheme
+                                  .bodySmall
+                                  ?.color
+                                  ?.withValues(alpha: 0.6),
                             ),
                           ),
                         ],
@@ -720,7 +725,9 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
                               style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 fontSize: 16,
-                                color: Theme.of(context).textTheme.bodyLarge?.color,
+                                color: Theme.of(
+                                  context,
+                                ).textTheme.bodyLarge?.color,
                               ),
                               overflow: TextOverflow.ellipsis,
                               maxLines: 1,
@@ -860,14 +867,22 @@ class _PharmacyHomeScreenState extends State<PharmacyHomeScreen> {
           children: [
             Icon(
               icon,
-              color: isSelected ? const Color(0xFF5A9CA0) : Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5),
+              color: isSelected
+                  ? const Color(0xFF5A9CA0)
+                  : Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
               size: 26,
             ),
             const SizedBox(height: 4),
             Text(
               label,
               style: TextStyle(
-                color: isSelected ? const Color(0xFF5A9CA0) : Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5),
+                color: isSelected
+                    ? const Color(0xFF5A9CA0)
+                    : Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
                 fontSize: 10,
                 fontWeight: isSelected ? FontWeight.w600 : FontWeight.normal,
               ),

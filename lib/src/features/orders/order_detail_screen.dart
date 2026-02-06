@@ -72,7 +72,10 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         leading: IconButton(
-          icon: Icon(Icons.arrow_back, color: Theme.of(context).appBarTheme.foregroundColor),
+          icon: Icon(
+            Icons.arrow_back,
+            color: Theme.of(context).appBarTheme.foregroundColor,
+          ),
           onPressed: () => Navigator.of(context).pop(),
         ),
         title: Text(
@@ -216,7 +219,7 @@ class _OrderDetailScreenState extends State<OrderDetailScreen> {
                 ? Image.network(
                     item.imageUrl,
                     fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) =>
+                    errorBuilder: (_, _, _) =>
                         const Icon(Icons.image_not_supported),
                   )
                 : const Icon(Icons.medication, color: Colors.grey),

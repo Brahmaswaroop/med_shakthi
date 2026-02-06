@@ -153,7 +153,9 @@ class _AddressSelectScreenState extends State<AddressSelectScreen> {
               height: MediaQuery.of(context).size.height * 0.9,
               decoration: BoxDecoration(
                 color: Theme.of(context).cardColor,
-                borderRadius: const BorderRadius.vertical(top: Radius.circular(20)),
+                borderRadius: const BorderRadius.vertical(
+                  top: Radius.circular(20),
+                ),
               ),
               child: Column(
                 children: [
@@ -176,7 +178,11 @@ class _AddressSelectScreenState extends State<AddressSelectScreen> {
                                 color: Colors.grey,
                               ),
                               filled: true,
-                              fillColor: Theme.of(context).brightness == Brightness.dark ? Colors.grey[900] : Colors.grey[100],
+                              fillColor:
+                                  Theme.of(context).brightness ==
+                                      Brightness.dark
+                                  ? Colors.grey[900]
+                                  : Colors.grey[100],
                               contentPadding: const EdgeInsets.symmetric(
                                 horizontal: 16,
                               ),
@@ -518,14 +524,20 @@ class _AddressSelectScreenState extends State<AddressSelectScreen> {
                                     fontSize: 16,
                                     color: address.isSelected
                                         ? Colors.teal
-                                        : Theme.of(context).textTheme.bodyLarge?.color,
+                                        : Theme.of(
+                                            context,
+                                          ).textTheme.bodyLarge?.color,
                                   ),
                                 ),
                                 const SizedBox(height: 4),
                                 Text(
                                   address.fullAddress,
                                   style: TextStyle(
-                                    color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
+                                    color: Theme.of(context)
+                                        .textTheme
+                                        .bodySmall
+                                        ?.color
+                                        ?.withValues(alpha: 0.6),
                                     fontSize: 14,
                                   ),
                                   maxLines: 2,

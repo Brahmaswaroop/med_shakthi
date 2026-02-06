@@ -56,8 +56,8 @@ class WishlistPage extends StatelessWidget {
                       Icon(
                         Icons.favorite_border,
                         size: 80,
-                        color: Theme.of(context).brightness == Brightness.dark 
-                            ? Colors.grey[700] 
+                        color: Theme.of(context).brightness == Brightness.dark
+                            ? Colors.grey[700]
                             : Colors.grey[300],
                       ),
                       const SizedBox(height: 16),
@@ -65,7 +65,9 @@ class WishlistPage extends StatelessWidget {
                         "Your wishlist is empty",
                         style: TextStyle(
                           fontSize: 18,
-                          color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6),
+                          color: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
                           fontWeight: FontWeight.w500,
                         ),
                       ),
@@ -73,8 +75,10 @@ class WishlistPage extends StatelessWidget {
                       Text(
                         "Save items you want to buy later!",
                         style: TextStyle(
-                          fontSize: 14, 
-                          color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5)
+                          fontSize: 14,
+                          color: Theme.of(
+                            context,
+                          ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
                         ),
                       ),
                     ],
@@ -163,8 +167,8 @@ class _WishlistCard extends StatelessWidget {
                     child: Container(
                       height: 80,
                       width: 80,
-                      color: Theme.of(context).brightness == Brightness.dark 
-                          ? Colors.grey[800] 
+                      color: Theme.of(context).brightness == Brightness.dark
+                          ? Colors.grey[800]
                           : Colors.grey[50],
                       child: Image.network(
                         item.image,
