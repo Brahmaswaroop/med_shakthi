@@ -10,13 +10,11 @@ import '../../data/cart_item.dart';
 class CartPage extends StatelessWidget {
   const CartPage({super.key});
 
-  final Color themeColor = const Color(0xFF4C8077);
-  // Remove hardcoded backgroundColor, will use theme instead
-
   @override
   Widget build(BuildContext context) {
     // Listen to changes in CartData using Provider.of
     final cart = Provider.of<CartData>(context);
+    final themeColor = Theme.of(context).primaryColor;
     final int shipping = cart.items.isNotEmpty ? 10 : 0;
     final double total = cart.subTotal + shipping;
     return Scaffold(
@@ -33,13 +31,17 @@ class CartPage extends StatelessWidget {
                       SliverAppBar(
                         floating: true,
                         pinned: true,
-                        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
+                        backgroundColor: Theme.of(
+                          context,
+                        ).appBarTheme.backgroundColor,
                         elevation: 0,
                         centerTitle: true,
                         title: Text(
                           "My Cart",
                           style: TextStyle(
-                            color: Theme.of(context).appBarTheme.foregroundColor,
+                            color: Theme.of(
+                              context,
+                            ).appBarTheme.foregroundColor,
                             fontWeight: FontWeight.bold,
                             fontSize: 20,
                           ),
@@ -94,6 +96,7 @@ class CartPage extends StatelessWidget {
   }
 
   Widget _buildEmptyState(BuildContext context) {
+    final themeColor = Theme.of(context).primaryColor;
     return Center(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -129,7 +132,11 @@ class CartPage extends StatelessWidget {
           const SizedBox(height: 8),
           Text(
             'Looks like you haven\'t added anything yet.',
-            style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6)),
+            style: TextStyle(
+              color: Theme.of(
+                context,
+              ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
+            ),
           ),
           const SizedBox(height: 32),
           ElevatedButton(
@@ -160,6 +167,7 @@ class CartPage extends StatelessWidget {
     int shipping,
     double total,
   ) {
+    final themeColor = Theme.of(context).primaryColor;
     return Container(
       padding: const EdgeInsets.all(24),
       decoration: BoxDecoration(
@@ -229,7 +237,15 @@ class CartPage extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Text(label, style: TextStyle(fontSize: 15, color: Theme.of(context).textTheme.bodySmall?.color?.withValues(alpha: 0.7))),
+        Text(
+          label,
+          style: TextStyle(
+            fontSize: 15,
+            color: Theme.of(
+              context,
+            ).textTheme.bodySmall?.color?.withValues(alpha: 0.7),
+          ),
+        ),
         Text(
           "₹${value is int ? value.toString() : value.toStringAsFixed(2)}",
           style: const TextStyle(fontSize: 15, fontWeight: FontWeight.w600),
@@ -268,6 +284,7 @@ class CartPage extends StatelessWidget {
     CartData cart,
     int shipping,
   ) {
+    final themeColor = Theme.of(context).primaryColor;
     final int totalItems = cart.items.fold(
       0,
       (sum, item) => sum + item.quantity,
@@ -372,9 +389,9 @@ class _CartItemCard extends StatelessWidget {
                 height: 80,
                 padding: const EdgeInsets.all(8),
                 decoration: BoxDecoration(
-                  color: Theme.of(context).brightness == Brightness.dark 
-                      ? Colors.grey[900] 
-                      : Colors.grey[50], 
+                  color: Theme.of(context).brightness == Brightness.dark
+                      ? Colors.grey[900]
+                      : Colors.grey[50],
                   borderRadius: BorderRadius.circular(15),
                 ),
                 child: item.imagePath?.startsWith('http') ?? false
@@ -382,8 +399,12 @@ class _CartItemCard extends StatelessWidget {
                     : Image.asset(
                         item.imagePath ?? '',
                         fit: BoxFit.contain,
-                        errorBuilder: (c, o, s) =>
-                            Icon(Icons.medication, color: Theme.of(context).brightness == Brightness.dark ? Colors.grey[700] : Colors.grey[300]),
+                        errorBuilder: (c, o, s) => Icon(
+                          Icons.medication,
+                          color: Theme.of(context).brightness == Brightness.dark
+                              ? Colors.grey[700]
+                              : Colors.grey[300],
+                        ),
                       ),
               ),
             ),
@@ -420,20 +441,25 @@ class _CartItemCard extends StatelessWidget {
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
               decoration: BoxDecoration(
-                color: Theme.of(context).brightness == Brightness.dark 
-                    ? Colors.grey[900] 
+                color: Theme.of(context).brightness == Brightness.dark
+                    ? Colors.grey[900]
                     : Colors.grey[100],
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Row(
                 children: [
-                  _buildQtyBtn(context, Icons.remove, () {
-                    if (item.quantity > 1) {
-                      cart.decrement(index);
-                    } else {
-                      _showRemoveConfirmation(context, cart, index);
-                    }
-                  }, color: item.quantity == 1 ? Colors.red : null),
+                  _buildQtyBtn(
+                    context,
+                    Icons.remove,
+                    () {
+                      if (item.quantity > 1) {
+                        cart.decrement(index);
+                      } else {
+                        _showRemoveConfirmation(context, cart, index);
+                      }
+                    },
+                    color: item.quantity == 1 ? Colors.red : null,
+                  ),
                   SizedBox(
                     width: 32,
                     child: Center(
@@ -453,7 +479,12 @@ class _CartItemCard extends StatelessWidget {
     );
   }
 
-  Widget _buildQtyBtn(BuildContext context, IconData icon, VoidCallback onTap, {Color? color}) {
+  Widget _buildQtyBtn(
+    BuildContext context,
+    IconData icon,
+    VoidCallback onTap, {
+    Color? color,
+  }) {
     return InkWell(
       onTap: onTap,
       borderRadius: BorderRadius.circular(15),
@@ -461,8 +492,8 @@ class _CartItemCard extends StatelessWidget {
         width: 30,
         height: 30,
         decoration: BoxDecoration(
-          color: Theme.of(context).brightness == Brightness.dark 
-              ? Colors.grey[800] 
+          color: Theme.of(context).brightness == Brightness.dark
+              ? Colors.grey[800]
               : Colors.white,
           shape: BoxShape.circle,
           boxShadow: [
@@ -473,7 +504,13 @@ class _CartItemCard extends StatelessWidget {
             ),
           ],
         ),
-        child: Icon(icon, size: 16, color: color ?? Theme.of(context).iconTheme.color?.withOpacity(0.7)),
+        child: Icon(
+          icon,
+          size: 16,
+          color:
+              color ??
+              Theme.of(context).iconTheme.color?.withValues(alpha: 0.7),
+        ),
       ),
     );
   }

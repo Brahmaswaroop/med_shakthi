@@ -8,26 +8,29 @@ class SupplierPayoutPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF5F7F9),
+      backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        backgroundColor: Colors.white,
+        backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
         centerTitle: true,
-        title: const Text(
+        title: Text(
           "Payouts",
-          style: TextStyle(color: Colors.black, fontWeight: FontWeight.w600),
+          style: TextStyle(
+            color: Theme.of(context).appBarTheme.foregroundColor,
+            fontWeight: FontWeight.w600,
+          ),
         ),
-        iconTheme: const IconThemeData(color: Colors.black),
+        iconTheme: Theme.of(context).appBarTheme.iconTheme,
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(16),
         child: Column(
           children: [
-            _summaryCards(),
+            _summaryCards(context),
             const SizedBox(height: 20),
             _withdrawButton(context),
             const SizedBox(height: 24),
-            _payoutHistory(),
+            _payoutHistory(context),
           ],
         ),
       ),
@@ -36,11 +39,12 @@ class SupplierPayoutPage extends StatelessWidget {
 
   // ---------------- SUMMARY CARDS ----------------
 
-  Widget _summaryCards() {
+  Widget _summaryCards(BuildContext context) {
     return Row(
       children: [
         Expanded(
           child: _infoCard(
+            context,
             title: "Total Earnings",
             amount: "₹ 1,24,500",
             icon: Icons.trending_up,
@@ -50,6 +54,7 @@ class SupplierPayoutPage extends StatelessWidget {
         const SizedBox(width: 12),
         Expanded(
           child: _infoCard(
+            context,
             title: "Available Balance",
             amount: "₹ 32,800",
             icon: Icons.account_balance_wallet,
@@ -60,7 +65,8 @@ class SupplierPayoutPage extends StatelessWidget {
     );
   }
 
-  Widget _infoCard({
+  Widget _infoCard(
+    BuildContext context, {
     required String title,
     required String amount,
     required IconData icon,
@@ -69,11 +75,11 @@ class SupplierPayoutPage extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: Colors.black.withValues(alpha: 0.05),
             blurRadius: 12,
             offset: const Offset(0, 4),
           ),
@@ -86,9 +92,14 @@ class SupplierPayoutPage extends StatelessWidget {
           const SizedBox(height: 12),
           Text(title, style: const TextStyle(fontSize: 13, color: Colors.grey)),
           const SizedBox(height: 6),
+          const SizedBox(height: 6),
           Text(
             amount,
-            style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+            style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+              color: Theme.of(context).textTheme.bodyLarge?.color,
+            ),
           ),
         ],
       ),
@@ -124,7 +135,7 @@ class SupplierPayoutPage extends StatelessWidget {
 
   // ---------------- PAYOUT HISTORY ----------------
 
-  Widget _payoutHistory() {
+  Widget _payoutHistory(BuildContext context) {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -134,21 +145,29 @@ class SupplierPayoutPage extends StatelessWidget {
         ),
         const SizedBox(height: 12),
         _payoutTile(
+          context,
           date: "12 Jan 2026",
           amount: "₹ 18,500",
           status: "Completed",
         ),
         _payoutTile(
+          context,
           date: "05 Jan 2026",
           amount: "₹ 9,200",
           status: "Completed",
         ),
-        _payoutTile(date: "28 Dec 2025", amount: "₹ 5,100", status: "Pending"),
+        _payoutTile(
+          context,
+          date: "28 Dec 2025",
+          amount: "₹ 5,100",
+          status: "Pending",
+        ),
       ],
     );
   }
 
-  Widget _payoutTile({
+  Widget _payoutTile(
+    BuildContext context, {
     required String date,
     required String amount,
     required String status,
@@ -159,11 +178,11 @@ class SupplierPayoutPage extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(14),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(14),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.04),
+            color: Colors.black.withValues(alpha: 0.04),
             blurRadius: 10,
             offset: const Offset(0, 4),
           ),
@@ -174,8 +193,8 @@ class SupplierPayoutPage extends StatelessWidget {
           CircleAvatar(
             radius: 22,
             backgroundColor: isCompleted
-                ? Colors.green.withOpacity(0.1)
-                : Colors.orange.withOpacity(0.1),
+                ? Colors.green.withValues(alpha: 0.1)
+                : Colors.orange.withValues(alpha: 0.1),
             child: Icon(
               isCompleted ? Icons.check_circle : Icons.schedule,
               color: isCompleted ? Colors.green : Colors.orange,
@@ -188,9 +207,10 @@ class SupplierPayoutPage extends StatelessWidget {
               children: [
                 Text(
                   amount,
-                  style: const TextStyle(
+                  style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.bold,
+                    color: Theme.of(context).textTheme.bodyLarge?.color,
                   ),
                 ),
                 const SizedBox(height: 4),
@@ -205,8 +225,8 @@ class SupplierPayoutPage extends StatelessWidget {
             padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
             decoration: BoxDecoration(
               color: isCompleted
-                  ? Colors.green.withOpacity(0.12)
-                  : Colors.orange.withOpacity(0.12),
+                  ? Colors.green.withValues(alpha: 0.12)
+                  : Colors.orange.withValues(alpha: 0.12),
               borderRadius: BorderRadius.circular(20),
             ),
             child: Text(

@@ -267,13 +267,16 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
                             letterSpacing: -0.5,
-                            color: Theme.of(context).textTheme.titleLarge?.color,
+                            color: Theme.of(
+                              context,
+                            ).textTheme.titleLarge?.color,
                           ),
                         ),
                         Text(
                           'Join our network and grow your business',
                           style: TextStyle(
-                            color: Theme.of(context).textTheme.bodyMedium?.color?.withOpacity(0.7),
+                            color: Theme.of(context).textTheme.bodyMedium?.color
+                                ?.withValues(alpha: 0.7),
                             fontSize: 16,
                           ),
                         ),
@@ -360,7 +363,9 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
                             validator: (value) =>
                                 value == null ? 'Select State' : null,
                             style: TextStyle(
-                              color: Theme.of(context).textTheme.bodyLarge?.color,
+                              color: Theme.of(
+                                context,
+                              ).textTheme.bodyLarge?.color,
                             ),
                             dropdownColor: Theme.of(context).cardColor,
                           ),
@@ -470,7 +475,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
                                       BoxShadow(
                                         color: const Color(
                                           0xFF6AA39B,
-                                        ).withOpacity(0.4),
+                                        ).withValues(alpha: 0.4),
                                         blurRadius: 10,
                                         offset: const Offset(0, 4),
                                       ),
@@ -574,9 +579,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
             (value) => value == null || value.isEmpty
                 ? 'This field is required'
                 : null,
-        style: TextStyle(
-          color: Theme.of(context).textTheme.bodyLarge?.color,
-        ),
+        style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
       ),
     );
   }
@@ -610,9 +613,7 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
         },
         validator: (value) =>
             value == null ? 'Please select company type' : null,
-        style: TextStyle(
-          color: Theme.of(context).textTheme.bodyLarge?.color,
-        ),
+        style: TextStyle(color: Theme.of(context).textTheme.bodyLarge?.color),
         dropdownColor: Theme.of(context).cardColor,
       ),
     );
@@ -630,7 +631,11 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
         ),
         child: Row(
           children: [
-            Icon(Icons.calendar_today, size: 20, color: Theme.of(context).iconTheme.color?.withOpacity(0.6)),
+            Icon(
+              Icons.calendar_today,
+              size: 20,
+              color: Theme.of(context).iconTheme.color?.withValues(alpha: 0.6),
+            ),
             const SizedBox(width: 12),
             Text(
               _selectedExpiryDate == null
@@ -638,7 +643,9 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
                   : 'Expiry: ${DateFormat('dd MMM yyyy').format(_selectedExpiryDate!)}',
               style: TextStyle(
                 color: _selectedExpiryDate == null
-                    ? Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6)
+                    ? Theme.of(
+                        context,
+                      ).textTheme.bodySmall?.color?.withValues(alpha: 0.6)
                     : Theme.of(context).textTheme.bodyLarge?.color,
                 fontSize: 16,
               ),
@@ -682,7 +689,9 @@ class _SupplierSignupPageState extends State<SupplierSignupPage> {
             Text(
               '(PDF, JPG, PNG up to 5MB)',
               style: TextStyle(
-                color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.5),
+                color: Theme.of(
+                  context,
+                ).textTheme.bodySmall?.color?.withValues(alpha: 0.5),
                 fontSize: 12,
               ),
             ),

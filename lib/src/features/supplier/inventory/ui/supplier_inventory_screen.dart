@@ -66,11 +66,15 @@ class _SupplierInventoryScreenState extends State<SupplierInventoryScreen> {
       appBar: AppBar(
         title: Text(
           'My Inventory',
-          style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor),
+          style: TextStyle(
+            color: Theme.of(context).appBarTheme.foregroundColor,
+          ),
         ),
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
-        iconTheme: IconThemeData(color: Theme.of(context).appBarTheme.foregroundColor),
+        iconTheme: IconThemeData(
+          color: Theme.of(context).appBarTheme.foregroundColor,
+        ),
         actions: [
           IconButton(
             icon: const Icon(Icons.add),
@@ -158,7 +162,12 @@ class _SupplierInventoryScreenState extends State<SupplierInventoryScreen> {
                 const SizedBox(height: 4),
                 Text(
                   'SKU: ${product.id.substring(0, 4)}... • ₹${product.price}',
-                  style: TextStyle(color: Theme.of(context).textTheme.bodySmall?.color?.withOpacity(0.6), fontSize: 13),
+                  style: TextStyle(
+                    color: Theme.of(
+                      context,
+                    ).textTheme.bodySmall?.color?.withValues(alpha: 0.6),
+                    fontSize: 13,
+                  ),
                 ),
               ],
             ),
@@ -166,7 +175,12 @@ class _SupplierInventoryScreenState extends State<SupplierInventoryScreen> {
           IconButton(
             icon: const Icon(Icons.edit, color: Colors.blue),
             onPressed: () {
-              // TODO: Navigate to Edit Product Page
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => AddProductPage(product: product.toMap()),
+                ),
+              ).then((_) => setState(() {}));
             },
           ),
           IconButton(

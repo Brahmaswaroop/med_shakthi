@@ -7,6 +7,8 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:med_shakthi/src/features/auth/presentation/screens/login_page.dart';
 import 'package:med_shakthi/src/features/checkout/presentation/screens/address_store.dart';
 import 'package:med_shakthi/src/features/checkout/presentation/screens/address_select_screen.dart';
+import 'package:med_shakthi/src/features/cart/data/cart_data.dart';
+import 'package:med_shakthi/src/features/wishlist/data/wishlist_service.dart';
 import '../../../orders/orders_page.dart';
 
 import '../../../checkout/presentation/screens/payment_methods_for_pro_page.dart';
@@ -121,6 +123,10 @@ class _AccountPageState extends State<AccountPage> {
   Future<void> _handleLogout() async {
     setState(() => _isLoading = true);
     try {
+      // Clear local persistence before signing out
+      context.read<CartData>().clearLocalStateOnly();
+      context.read<WishlistService>().clearWishlist();
+
       await supabase.auth.signOut();
       if (!mounted) return;
 
@@ -328,7 +334,8 @@ class _AccountPageState extends State<AccountPage> {
                               Text(
                                 _email,
                                 style: TextStyle(
-                                  color: theme.textTheme.bodyMedium?.color?.withOpacity(0.7),
+                                  color: theme.textTheme.bodyMedium?.color
+                                      ?.withValues(alpha: 0.7),
                                 ),
                               ),
                               if (_phone.isNotEmpty) ...[
@@ -336,7 +343,8 @@ class _AccountPageState extends State<AccountPage> {
                                 Text(
                                   _phone,
                                   style: TextStyle(
-                                    color: theme.textTheme.bodySmall?.color?.withOpacity(0.6),
+                                    color: theme.textTheme.bodySmall?.color
+                                        ?.withValues(alpha: 0.6),
                                     fontSize: 12,
                                   ),
                                 ),
@@ -399,7 +407,6 @@ class _AccountPageState extends State<AccountPage> {
                             );
                           },
                         ),
-
 
                         const SizedBox(height: 12),
 
@@ -552,4 +559,3 @@ class _SimpleExpansionTile extends StatelessWidget {
     );
   }
 }
-

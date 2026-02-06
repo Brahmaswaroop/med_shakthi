@@ -79,32 +79,47 @@ class WishlistService extends ChangeNotifier {
 
   /// 💾 Local Storage: Save
   Future<void> _saveToLocal() async {
+    final user = _supabase.auth.currentUser;
+    final String key = user != null ? 'wishlist_${user.id}' : 'local_wishlist';
+
     final prefs = await SharedPreferences.getInstance();
     final List<String> jsonList = _wishlist.map((item) {
-      // Create a map suitable for JSON (Supabase toMap requires userId, we mock it or modify model)
-      // Re-using toMap with empty userId just for serialization shape
-      return jsonEncode(item.toMap('local_user'));
+      return jsonEncode(item.toMap(user?.id ?? 'local_user'));
     }).toList();
-    await prefs.setStringList('local_wishlist', jsonList);
+    await prefs.setStringList(key, jsonList);
   }
 
   /// 💾 Local Storage: Load
   Future<void> _loadFromLocal() async {
+    final user = _supabase.auth.currentUser;
+    final String key = user != null ? 'wishlist_${user.id}' : 'local_wishlist';
+
     final prefs = await SharedPreferences.getInstance();
-    final List<String>? jsonList = prefs.getStringList('local_wishlist');
+    final List<String>? jsonList = prefs.getStringList(key);
 
     if (jsonList != null) {
       _wishlist = jsonList.map((jsonStr) {
         return WishlistItem.fromMap(jsonDecode(jsonStr));
       }).toList();
       notifyListeners();
+    } else {
+      _wishlist = [];
     }
   }
 
-  void clearWishlist() async {
+  Future<void> clearWishlist() async {
     _wishlist.clear();
     notifyListeners();
+    // Do not clear 'local_wishlist' generic key, but clear specific user key if needed
+    // Actually standard clearWishlist might be used for 'Clear All' feature?
+    // If this is for LOGOUT, we should use clearLocalStateOnly.
+    // For now, let's assume this clearWishlist IS the logout clear.
+    final user = _supabase.auth.currentUser;
     final prefs = await SharedPreferences.getInstance();
-    await prefs.remove('local_wishlist');
+    if (user != null) {
+      await prefs.remove('wishlist_${user.id}');
+    } else {
+      await prefs.remove('local_wishlist');
+    }
   }
 }

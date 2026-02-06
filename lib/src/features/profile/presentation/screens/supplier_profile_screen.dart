@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:med_shakthi/src/features/auth/presentation/screens/login_page.dart';
+import '../../../../features/profile/presentation/screens/privacy_policy_screen.dart';
 
 class SupplierProfileScreen extends StatefulWidget {
   const SupplierProfileScreen({super.key});
@@ -154,7 +155,12 @@ class _SupplierProfileScreenState extends State<SupplierProfileScreen> {
     return Scaffold(
       backgroundColor: Theme.of(context).scaffoldBackgroundColor,
       appBar: AppBar(
-        title: Text("My Profile", style: TextStyle(color: Theme.of(context).appBarTheme.foregroundColor)),
+        title: Text(
+          "My Profile",
+          style: TextStyle(
+            color: Theme.of(context).appBarTheme.foregroundColor,
+          ),
+        ),
         centerTitle: true,
         backgroundColor: Theme.of(context).appBarTheme.backgroundColor,
         elevation: 0,
@@ -291,6 +297,14 @@ class _SupplierProfileScreenState extends State<SupplierProfileScreen> {
                   // 5. Account Actions
                   _buildSectionTitle("Settings"),
                   _buildMenuOption(Icons.settings, "Account Settings", () {}),
+                  _buildMenuOption(Icons.privacy_tip, "Privacy Policy", () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (_) => const PrivacyPolicyScreen(),
+                      ),
+                    );
+                  }),
                   _buildMenuOption(Icons.notifications, "Notifications", () {}),
                   _buildMenuOption(Icons.help, "Help & Support", () {}),
                   _buildMenuOption(Icons.logout, "Logout", _handleLogout),
@@ -419,7 +433,9 @@ class _SupplierProfileScreenState extends State<SupplierProfileScreen> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: Theme.of(context).dividerColor.withValues(alpha: 0.1),
+        ),
       ),
       child: Theme(
         data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
@@ -430,7 +446,11 @@ class _SupplierProfileScreenState extends State<SupplierProfileScreen> {
               color: const Color(0xFF4C8077).withValues(alpha: 0.1),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.business, color: Color(0xFF4C8077), size: 20),
+            child: const Icon(
+              Icons.business,
+              color: Color(0xFF4C8077),
+              size: 20,
+            ),
           ),
           title: Text(
             title,
@@ -536,7 +556,9 @@ class _SupplierProfileScreenState extends State<SupplierProfileScreen> {
       decoration: BoxDecoration(
         color: Theme.of(context).cardColor,
         borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: Theme.of(context).dividerColor.withValues(alpha: 0.1)),
+        border: Border.all(
+          color: Theme.of(context).dividerColor.withValues(alpha: 0.1),
+        ),
       ),
       child: ListTile(
         leading: Container(
@@ -550,7 +572,7 @@ class _SupplierProfileScreenState extends State<SupplierProfileScreen> {
         title: Text(
           title,
           style: TextStyle(
-            fontWeight: FontWeight.w600, 
+            fontWeight: FontWeight.w600,
             fontSize: 15,
             color: Theme.of(context).textTheme.bodyLarge?.color,
           ),

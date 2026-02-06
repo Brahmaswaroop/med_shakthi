@@ -16,9 +16,9 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
     final email = _emailController.text.trim();
 
     if (email.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Please enter your email')),
-      );
+      ScaffoldMessenger.of(
+        context,
+      ).showSnackBar(const SnackBar(content: Text('Please enter your email')));
       return;
     }
 
@@ -42,10 +42,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
       Navigator.pop(context);
     } catch (e) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: $e'),
-          backgroundColor: Colors.red,
-        ),
+        SnackBar(content: Text('Error: $e'), backgroundColor: Colors.red),
       );
     } finally {
       if (mounted) setState(() => _isLoading = false);
@@ -118,7 +115,7 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: const Color(0xFF4C8077).withOpacity(0.15),
+            color: const Color(0xFF4C8077).withValues(alpha: 0.15),
             blurRadius: 25,
             offset: const Offset(0, 12),
           ),
@@ -136,20 +133,14 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
 
           const Text(
             'Forgot Password?',
-            style: TextStyle(
-              fontSize: 22,
-              fontWeight: FontWeight.bold,
-            ),
+            style: TextStyle(fontSize: 22, fontWeight: FontWeight.bold),
           ),
           const SizedBox(height: 8),
 
           const Text(
             'Enter your email and we will send you\ninstructions to reset your password.',
             textAlign: TextAlign.center,
-            style: TextStyle(
-              fontSize: 14,
-              color: Colors.grey,
-            ),
+            style: TextStyle(fontSize: 14, color: Colors.grey),
           ),
           const SizedBox(height: 24),
 
@@ -178,17 +169,11 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         ),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: BorderSide(
-            color: Colors.orange.shade400,
-            width: 1.5,
-          ),
+          borderSide: BorderSide(color: Colors.orange.shade400, width: 1.5),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(14),
-          borderSide: const BorderSide(
-            color: Color(0xFF4C8077),
-            width: 2,
-          ),
+          borderSide: const BorderSide(color: Color(0xFF4C8077), width: 2),
         ),
       ),
     );
@@ -209,21 +194,21 @@ class _ForgotPasswordPageState extends State<ForgotPasswordPage> {
         onPressed: _isLoading ? null : _sendResetLink,
         child: _isLoading
             ? const SizedBox(
-          height: 22,
-          width: 22,
-          child: CircularProgressIndicator(
-            strokeWidth: 2,
-            color: Colors.white,
-          ),
-        )
+                height: 22,
+                width: 22,
+                child: CircularProgressIndicator(
+                  strokeWidth: 2,
+                  color: Colors.white,
+                ),
+              )
             : const Text(
-          'Send Reset Link',
-          style: TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
-            color: Colors.black,
-          ),
-        ),
+                'Send Reset Link',
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.black,
+                ),
+              ),
       ),
     );
   }

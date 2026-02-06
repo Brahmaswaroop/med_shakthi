@@ -1,4 +1,5 @@
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter/foundation.dart';
 import '../models/product_model.dart';
 
 class ProductRepository {
@@ -14,14 +15,14 @@ class ProductRepository {
 
       // --- DEBUG PRINT ---
       // This will show up in your "Run" tab. Check if it's empty [].
-      print('📦 Supabase Raw Data: $response');
+      // debugPrint('📦 Supabase Raw Data: $response');
 
       // Convert the List<dynamic> from Supabase into List<Product>
       // We use the helper method from your product model (ensure it exists)
       return (response as List).map((e) => Product.fromJson(e)).toList();
     } catch (e) {
       // Return empty list on error (or handle it better in production)
-      print('❌ Error fetching products: $e');
+      debugPrint('❌ Error fetching products: $e');
       return [];
     }
   }
@@ -37,7 +38,7 @@ class ProductRepository {
 
       return (response as List).map((e) => Product.fromJson(e)).toList();
     } catch (e) {
-      print('❌ Error fetching supplier products: $e');
+      debugPrint('❌ Error fetching supplier products: $e');
       return [];
     }
   }
@@ -47,7 +48,7 @@ class ProductRepository {
     try {
       await _supabase.from('products').delete().eq('id', productId);
     } catch (e) {
-      print('❌ Error deleting product: $e');
+      debugPrint('❌ Error deleting product: $e');
       rethrow;
     }
   }
